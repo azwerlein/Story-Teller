@@ -1,5 +1,5 @@
 <script>
-import StoryCard from "../App.vue";
+import StoryCard from "./StoryCard.vue";
 
 export default {
   name: "StoryList",
@@ -8,7 +8,7 @@ export default {
     return {
       stories: [
         {title: 'Xenoblade Chronicles', author: 'Monolith Soft'},
-        {title: 'Final Fantasy IV',}
+        {title: 'Final Fantasy IV', author: 'Square Enix'}
       ]
     }
   },
@@ -16,9 +16,9 @@ export default {
 </script>
 
 <template>
-  <story-card v-for="story in stories"
-  :title=story.title
-  :author=story.author></story-card>
+  <StoryCard v-for="story in stories"
+             :title=story.title
+             :author=story.author></StoryCard>
 </template>
 
 <style scoped>
