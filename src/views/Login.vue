@@ -22,13 +22,14 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="login">
+  <div class="w-64 content-center m-auto">
     <label class="label" for="emailInput">Email</label>
-    <input class="form-control" type="text" id="emailInput" placeholder="Email" required>
+    <input class="form-control w-full" type="text" id="emailInput" placeholder="Email" required>
     <label class="label" for="passwordInput">Password</label>
-    <input class="form-control" type="text" id="passwordInput" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
+    <input class="form-control w-full" type="text" id="passwordInput" placeholder="Password" required>
+    <button class="btn" v-on:click="login">Login</button>
+    <RouterLink class="link" :to="{name: 'register'}">Create an account</RouterLink>
+  </div>
 </template>
 
 <style scoped>

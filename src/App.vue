@@ -36,20 +36,19 @@ function logout() {
       <div class="flex-auto flex justify-end">
         <button class="btn">Notifications</button>
         <button class="btn" v-on:click="logout">Logout</button>
-<!--        <RouterLink :to="{name: 'profile'}">-->
-<!--          <div v-if="authUser.value.photoURL">-->
-<!--            <div class="avatar">-->
-<!--              <img class="rounded-full border-4 border-slate-400" src="./assets/profilepic.jpg"-->
-<!--                   alt="Profile">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div v-else>-->
-<!--            <div class="avatar placeholder">-->
-<!--              <span>{{ authUser.value.email[0] }}</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--      </RouterLink>-->
-    </div>
+        <RouterLink :to="{name: 'profile'}">
+          <!--          <div v-if="authUser.value.photoURL">-->
+          <div>
+            <img class="rounded-full border-4 border-slate-400 h-20" src="./assets/profilepic.jpg"
+                 alt="Profile">
+          </div>
+          <!--          <div v-else>-->
+          <!--            <div class="avatar placeholder">-->
+          <!--              <span>{{ authUser.value.email[0] }}</span>-->
+          <!--            </div>-->
+          <!--          </div>-->
+        </RouterLink>
+      </div>
     </div>
     <div v-else>
       <RouterLink :to="{name: 'login'}" class="btn">Login</RouterLink>

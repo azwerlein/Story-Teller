@@ -1,7 +1,17 @@
 <script>
+import {db} from "../js/firebase.js";
+
 export default {
   name: "Profile",
-  props: {},
+  props: {
+    id: String,
+    required: false,
+  },
+  data() {
+    return {
+
+    }
+  },
 }
 </script>
 
