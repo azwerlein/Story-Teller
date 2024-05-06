@@ -18,7 +18,8 @@ export default {
 <template>
   <StoryCard v-for="story in stories"
              :title=story.title
-             :author=story.author></StoryCard>
+             :author=story.author
+             class="my-2"></StoryCard>
 </template>
 
 <style scoped>

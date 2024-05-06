@@ -14,7 +14,7 @@ export default {
 </script>
 
 <template>
-  <div class="card bg-slate-600 text-black">
+  <div class="card bg-neutral-600 text-black border-4 border-amber-300">
     <div class="card-body">
       <h2>{{ title }}</h2>
       <h3>{{ author }}</h3>
