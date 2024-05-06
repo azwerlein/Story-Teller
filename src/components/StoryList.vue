@@ -1,5 +1,6 @@
 <script>
 import StoryCard from "./StoryCard.vue";
+import Story from "../models/Story.ts";
 
 export default {
   name: "StoryList",
@@ -7,8 +8,8 @@ export default {
   data() {
     return {
       stories: [
-        {title: 'Xenoblade Chronicles', author: 'Monolith Soft'},
-        {title: 'Final Fantasy IV', author: 'Square Enix'}
+        new Story('Xenoblade Chronicles', 'Monolith Soft'),
+        new Story('Final Fantasy IV', 'Square Enix'),
       ]
     }
   },

@@ -14,12 +14,14 @@ export default {
 </script>
 
 <template>
-  <div class="card bg-neutral-600 text-black border-4 border-amber-300">
-    <div class="card-body">
-      <h2>{{ title }}</h2>
-      <h3>{{ author }}</h3>
+  <RouterLink :to="{name: 'storyeditor'}">
+    <div class="card bg-neutral-600 text-black border-4 border-amber-300">
+      <div class="card-body">
+        <h2>{{ title }}</h2>
+        <h3>{{ author }}</h3>
+      </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
