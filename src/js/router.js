@@ -6,6 +6,8 @@ import AccountCreation from "../views/AccountCreation.vue";
 import StoryEditor from "../views/StoryEditor.vue";
 import CharacterEditor from "../views/CharacterEditor.vue";
 
+import {createRouter, createWebHistory} from "vue-router";
+
 const routes = [
     { path: '/', name: 'home', component: Home, alias: '/home' },
     { path: '/browse', name: 'browse', component: Browse },

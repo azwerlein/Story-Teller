@@ -1,37 +1,78 @@
 <script>
-import {createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {doc, setDoc} from 'firebase/firestore';
+import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+
 import {router} from "../js/router.js";
 import {auth, db, storage} from "../js/firebase.js";
 
+import User from '../models/User.js';
+
 export default {
   name: "AccountCreation",
+  data() {
+    return {
+      account: {
+        email: '',
+        password: '',
+      },
+      user: new User(),
+      picture: {},
+    }
+  },
   methods: {
     createAccount() {
-      let email = document.getElementById("emailInput").value;
-      let password = document.getElementById("passwordInput").value;
-      let displayName = document.getElementById('nameInput').value;
-      let picture = document.getElementById('pictureInput').value;
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, this.account.email, this.account.password)
           .then((userCredential) => {
             let user = userCredential.user;
-            storage.child('avatars/' + user.uid)
-                .put(picture)
-                .then(snapshot => {
-                  return snapshot.ref.getDownloadURL();
-                })
-                .then(url => {
-                  user.updateProfile({photoURL: url});
-                })
-            ;
-            updateProfile(user, {
-              displayName: displayName,
-            });
+            this.createProfile(user.uid);
+          })
+          .then(() => {
             router.push('home');
           })
           .catch(error => {
             console.log('Error: ', error.code, error.message);
           });
     },
+    createProfile(uid) {
+      const avatarsRef = ref(storage, 'avatars/' + uid);
+      uploadBytes(avatarsRef, this.picture)
+          .then(snapshot => {
+            console.log('Successfully uploaded image!');
+            return getDownloadURL(snapshot.ref);
+          })
+          .then(url => {
+            this.user.photoURL = url;
+          })
+          .catch(error => {
+            console.log('Error: ', error.code, error.data);
+          });
+      // storage.child('avatars/' + this.user.uid)
+      //     .put(this.picture)
+      //     .then(snapshot => {
+      //       return snapshot.ref.getDownloadURL();
+      //     })
+      //     .then(url => {
+      //       this.user.photoURL = url;
+      //     })
+      //     .catch(error => {
+      //       console.log('Error: ', error.code, error.data);
+      //     });
+      const docRef = doc(db, 'users', uid);
+      setDoc(docRef, this.user)
+          .then(snapshot => {
+
+          })
+          .catch(error => {
+            console.log('Error: ', error.code, error.data);
+          });
+    },
+    updatePicture(event) {
+      const target = event.target;
+      if (target && target.files) {
+        this.picture = target.files[0];
+      }
+    }
   },
 }
 </script>
@@ -40,14 +81,30 @@ export default {
   <h4></h4>
   <div class="w-64 content-center m-auto">
     <label class="label" for="emailInput">Email</label>
-    <input class="form-control w-full" type="text" id="emailInput" required>
+    <input class="form-control w-full"
+           type="text"
+           id="emailInput"
+           required
+           v-model="account.email">
     <label class="label" for="passwordInput">Password</label>
-    <input class="form-control w-full" type="text" id="passwordInput" required>
+    <input class="form-control w-full"
+           type="text"
+           id="passwordInput"
+           required
+           v-model="account.password">
     <label class="label" for="nameInput">Display Name</label>
-    <input class="form-control w-full" type="text" id="nameInput" required>
+    <input class="form-control w-full"
+           type="text"
+           id="nameInput"
+           required
+           v-model="user.displayName">
     <label class="label" for="avatar">Profile Picture</label>
-    <input class="form-control w-full" type="file" id="avatar" alt="Profile Picture"
-           accept="image/png, image/jpeg, image/jpg"/>
+    <input class="form-control w-full"
+           type="file"
+           id="avatar"
+           alt="Profile Picture"
+           accept="image/png, image/jpeg, image/jpg"
+           v-on:change="updatePicture"/>
     <button class="btn" v-on:click="createAccount">Create Account</button>
   </div>
 </template>
