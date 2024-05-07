@@ -54,7 +54,7 @@ const loggedIn = computed(() => {
                :src="authUser.profile.photoURL"
                alt="Profile">
           <ul tabindex="0" class="dropdown-content z-[1] menu shadow bg-secondary border-4 border-slate-400 rounded-box p-2 w-40">
-            <li><RouterLink :to="{name: 'profile'}">Profile</RouterLink></li>
+            <li><RouterLink :to="{name: 'profile', params: {id: authUser.user.uid}}">Profile</RouterLink></li>
             <li><a>Settings</a></li>
             <li><a v-on:click="logout">Logout</a></li>
           </ul>

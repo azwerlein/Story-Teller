@@ -38,30 +38,18 @@ export default {
       const avatarsRef = ref(storage, 'avatars/' + uid);
       uploadBytes(avatarsRef, this.picture)
           .then(snapshot => {
-            console.log('Successfully uploaded image!');
             return getDownloadURL(snapshot.ref);
           })
           .then(url => {
             this.user.photoURL = url;
-          })
-          .catch(error => {
-            console.log('Error: ', error.code, error.data);
-          });
-      // storage.child('avatars/' + this.user.uid)
-      //     .put(this.picture)
-      //     .then(snapshot => {
-      //       return snapshot.ref.getDownloadURL();
-      //     })
-      //     .then(url => {
-      //       this.user.photoURL = url;
-      //     })
-      //     .catch(error => {
-      //       console.log('Error: ', error.code, error.data);
-      //     });
-      const docRef = doc(db, 'users', uid);
-      setDoc(docRef, this.user)
-          .then(snapshot => {
+            const docRef = doc(db, 'users', uid);
+            setDoc(docRef, this.user)
+                .then(snapshot => {
 
+                })
+                .catch(error => {
+                  console.log('Error: ', error.code, error.data);
+                });
           })
           .catch(error => {
             console.log('Error: ', error.code, error.data);

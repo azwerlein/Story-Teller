@@ -13,12 +13,11 @@ const routes = [
     { path: '/browse', name: 'browse', component: Browse },
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: AccountCreation },
-    {path: '/browse', name: 'browse', component: Browse },
-    {path: '/user', name: 'profile', component: Profile },
+    { path: '/user/:id', name: 'profile', component: Profile, props: true },
     {
-        path: '/story', children: [
-            {path: '', name: 'storyeditor', component: StoryEditor,},
-            {path: 'character/:id', name: 'charactereditor', component: CharacterEditor,},
+        path: '/story/:id', children: [
+            {path: '/', name: 'storyeditor', component: StoryEditor,},
+            {path: '/character/:id', name: 'charactereditor', component: CharacterEditor,},
         ]
     },
 ];
