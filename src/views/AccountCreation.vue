@@ -6,7 +6,7 @@ import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 import {router} from "../js/router.js";
 import {auth, db, storage} from "../js/firebase.js";
 
-import User from '../models/User.js';
+import {Profile} from '../models/User.js';
 
 export default {
   name: "AccountCreation",
@@ -16,7 +16,7 @@ export default {
         email: '',
         password: '',
       },
-      user: new User(),
+      user: new Profile(),
       picture: {},
     }
   },

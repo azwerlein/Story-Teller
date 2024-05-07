@@ -1,13 +1,22 @@
 <script setup>
-import {ref} from "vue";
-import {auth} from "./js/firebase.js";
+import {computed, ref} from "vue";
 import {signOut} from "firebase/auth";
+import {doc, getDoc} from 'firebase/firestore';
+
+import {auth, db} from "./js/firebase.js";
+
+import {UserSession} from "./models/User.js";
 
 
-const authUser = ref(null);
-auth.onAuthStateChanged(user => {
+const authUser = ref(0);
+auth.onAuthStateChanged(async user => {
   if (user) {
-    authUser.value = user;
+    const docRef = doc(db, 'users', user.uid);
+    const profileSnap = await getDoc(docRef);
+
+    authUser.value = new UserSession(user, profileSnap.data());
+
+    console.log(authUser);
 
     console.log('Logged in as: ', user);
   } else {
@@ -19,6 +28,11 @@ auth.onAuthStateChanged(user => {
 function logout() {
   signOut(auth);
 }
+
+const loggedIn = computed(() => {
+  console.log(authUser.value)
+  return !!authUser.profile;
+});
 </script>
 
 <template>
@@ -35,19 +49,16 @@ function logout() {
     <div v-if="authUser">
       <div class="flex-auto flex justify-end">
         <button class="btn">Notifications</button>
-        <button class="btn" v-on:click="logout">Logout</button>
-        <RouterLink :to="{name: 'profile'}">
-          <!--          <div v-if="authUser.value.photoURL">-->
-          <div>
-            <img class="rounded-full border-4 border-slate-400 h-20" src="./assets/profilepic.jpg"
-                 alt="Profile">
-          </div>
-          <!--          <div v-else>-->
-          <!--            <div class="avatar placeholder">-->
-          <!--              <span>{{ authUser.value.email[0] }}</span>-->
-          <!--            </div>-->
-          <!--          </div>-->
-        </RouterLink>
+        <div class="dropdown dropdown-end">
+          <img tabindex="0" role="button" class="rounded-full border-4 border-slate-400 h-20"
+               :src="authUser.profile.photoURL"
+               alt="Profile">
+          <ul tabindex="0" class="dropdown-content z-[1] menu shadow bg-secondary border-4 border-slate-400 rounded-box p-2 w-40">
+            <li><RouterLink :to="{name: 'profile'}">Profile</RouterLink></li>
+            <li><a>Settings</a></li>
+            <li><a v-on:click="logout">Logout</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div v-else>
