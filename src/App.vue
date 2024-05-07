@@ -44,7 +44,9 @@ const loggedIn = computed(() => {
       <h2>
         <RouterLink :to="{name: 'browse'}">Browse</RouterLink>
       </h2>
-      <h2>Community</h2>
+      <h2>
+        <RouterLink :to="{name: 'community'}">Community</RouterLink>
+      </h2>
     </div>
     <div v-if="authUser">
       <div class="flex-auto flex justify-end">
