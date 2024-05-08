@@ -17,10 +17,12 @@ export default {
 </script>
 
 <template>
-  <StoryCard v-for="story in stories"
-             :title=story.title
-             :author=story.author
-             class="my-2"></StoryCard>
+  <div>
+    <StoryCard v-for="story in stories"
+               :title=story.title
+               :author=story.author
+               class="my-2"></StoryCard>
+  </div>
 </template>
 
 <style scoped>

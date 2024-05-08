@@ -7,7 +7,7 @@ export default {
 </script>
 
 <template>
-  <StoryList></StoryList>
+  <StoryList class="grid grid-cols-3 gap-4"></StoryList>
 </template>
 
 <style scoped>
