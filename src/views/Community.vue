@@ -33,7 +33,8 @@ export default {
 </script>
 
 <template>
-  <UserList :users="users"></UserList>
+  <UserList class="grid grid-cols-3 gap-4"
+            :users="users"></UserList>
 </template>
 
 <style scoped>
