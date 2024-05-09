@@ -23,7 +23,7 @@ export default {
         <div class="grid grid-cols-3">
           <img :src="profile.photoURL" alt="Profile">
           <div class="col-span-2">
-            <h2 class="">{{ profile.displayName }}</h2>
+            <h2>{{ profile.displayName }}</h2>
           </div>
         </div>
 
