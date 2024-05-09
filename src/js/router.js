@@ -16,12 +16,12 @@ const routes = [
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: AccountCreation },
     { path: '/user/:id', name: 'profile', component: Profile, props: true },
-    {
-        path: '/story/:id', children: [
-            { path: '/', name: 'storyeditor', component: StoryEditor },
+    // {
+    //     path: '/story/:id', children: [
+            { path: '/story', name: 'storyeditor', component: StoryEditor },
             { path: '/character/:id', name: 'charactereditor', component: CharacterEditor },
-        ]
-    },
+        // ]
+    // },
 ];
 
 export const router = createRouter({

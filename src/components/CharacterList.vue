@@ -1,5 +1,5 @@
 <script>
-import Character from "../models/Character.ts";
+import Character from "../models/Character.js";
 import CharacterCard from "./CharacterCard.vue";
 
 export default {
