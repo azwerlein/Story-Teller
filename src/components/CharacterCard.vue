@@ -1,19 +1,16 @@
-<script>
+<script setup>
 import Character from "../models/Character.js";
 
-export default {
-  name: "CharacterCard",
-  props: {
-    character: {
-      type: Character,
-      required: true,
-    }
-  },
-}
+defineProps({
+  character: {
+    type: Character,
+    required: true,
+  }
+});
 </script>
 
 <template>
-  <RouterLink :to="{name: 'charactereditor'}">
+  <RouterLink :to="{name: 'charactereditor', params: {id: 1}}">
     <div class="card bg-slate-600 text-black">
       <div class="card-body">
         <h2>{{ character.name }}</h2>

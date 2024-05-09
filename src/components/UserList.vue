@@ -1,16 +1,13 @@
-<script>
+<script setup>
 import UserCard from "./UserCard.vue";
 
-export default {
-  name: "UserList",
-  components: {UserCard},
-  props: {
-    users: {
-      type: Array,
-      required: true,
-    }
+defineProps({
+  users: {
+    type: Array,
+    required: true,
   }
-}
+});
+
 </script>
 
 <template>

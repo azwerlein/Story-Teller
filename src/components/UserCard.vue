@@ -1,19 +1,17 @@
-<script>
+<script setup>
 import {Profile} from "../models/User.js";
 
-export default {
-  name: "UserCard",
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    profile: {
-      type: Profile,
-      required: true,
-    }
+defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  profile: {
+    type: Profile,
+    required: true,
   }
-}
+});
+
 </script>
 
 <template>

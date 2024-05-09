@@ -1,19 +1,13 @@
-<script>
+<script setup>
 import StoryCard from "./StoryCard.vue";
 import Story from "../models/Story.ts";
+import {ref} from "vue";
 
-export default {
-  name: "StoryList",
-  components: {StoryCard},
-  data() {
-    return {
-      stories: [
-        new Story('Xenoblade Chronicles', 'Monolith Soft'),
-        new Story('Final Fantasy IV', 'Square Enix'),
-      ]
-    }
-  },
-}
+const stories = ref([
+  new Story('Xenoblade Chronicles', 'Monolith Soft'),
+  new Story('Final Fantasy IV', 'Square Enix'),
+]);
+
 </script>
 
 <template>

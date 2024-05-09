@@ -11,26 +11,6 @@ const story = ref(new Story(
         new Character('Noah'), new Character('Mio')
     ]
 ));
-
-
-// export default {
-//   name: "StoryEditor",
-//   components: {CharacterList},
-//   // props: {
-//   //   story: {
-//   //     type: Story,
-//   //     required: true,
-//   //   },
-//   // },
-//   data() {
-//     return {
-//       story: new Story('Xenoblade Chronicles', 'Monolith Soft', [new Character('Noah'), new Character('Mio')]),
-//     }
-//   },
-//   mounted() {
-//
-//   }
-// }
 </script>
 
 <template>
