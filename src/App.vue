@@ -9,19 +9,18 @@ import {UserSession} from "./models/User.js";
 
 
 const authUser = ref(0);
-auth.onAuthStateChanged(async user => {
+auth.onAuthStateChanged(user => {
   if (user) {
     const docRef = doc(db, 'users', user.uid);
-    const profileSnap = await getDoc(docRef);
-
-    authUser.value = new UserSession(user, profileSnap.data());
-
-    console.log(authUser);
-
-    console.log('Logged in as: ', user);
+    getDoc(docRef)
+        .then(snapshot => {
+          authUser.value = new UserSession(user, snapshot.data());
+        })
+        .catch(error => {
+          console.log('Error: ', error.code, error.data);
+        });
   } else {
     authUser.value = null;
-    console.log('Logged out');
   }
 });
 
@@ -30,8 +29,7 @@ function logout() {
 }
 
 const loggedIn = computed(() => {
-  console.log(authUser.value)
-  return !!authUser.profile;
+  return authUser.value?.profile;
 });
 </script>
 
@@ -48,15 +46,18 @@ const loggedIn = computed(() => {
         <RouterLink :to="{name: 'community'}">Community</RouterLink>
       </h2>
     </div>
-    <div v-if="authUser">
+    <div v-if="loggedIn">
       <div class="flex-auto flex justify-end">
         <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
           <img tabindex="0" role="button" class="rounded-full border-4 border-slate-400 h-20"
-               :src="authUser.profile.photoURL"
+               :src="authUser.profile?.photoURL"
                alt="Profile">
-          <ul tabindex="0" class="dropdown-content z-[1] menu shadow bg-secondary border-4 border-slate-400 rounded-box p-2 w-40">
-            <li><RouterLink :to="{name: 'profile', params: {id: authUser.user.uid}}">Profile</RouterLink></li>
+          <ul tabindex="0"
+              class="dropdown-content z-[1] menu shadow bg-secondary border-4 border-slate-400 rounded-box p-2 w-40">
+            <li>
+              <RouterLink :to="{name: 'profile', params: {id: authUser.user.uid}}">Profile</RouterLink>
+            </li>
             <li><a>Settings</a></li>
             <li><a v-on:click="logout">Logout</a></li>
           </ul>
