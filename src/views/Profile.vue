@@ -1,34 +1,35 @@
-<script>
+<script setup>
 import {db} from "../js/firebase.js";
 import {doc, getDoc} from "firebase/firestore";
 import {Profile} from "../models/User.js";
+import {ref} from "vue";
 
-export default {
-  name: "Profile",
-  props: {
-    id: String,
+const props = defineProps({
+  id: {
+    type: String,
     required: true,
   },
-  data() {
-    return {
-      profile: new Profile(),
-    }
-  },
-  beforeCreate() {
-    const docRef = doc(db, 'users', this.id);
-    getDoc(docRef).then(snap => {
-      if (snap.exists()) {
-        const data = snap.data();
-        this.profile.displayName = data.displayName;
-        this.profile.photoURL = data.photoURL;
-      }
-      console.log(this.profile);
-    })
-    .catch(error => {
-      console.log('Error: ', error.code, error.message);
-    });
-  }
+});
+
+const profile = ref(new Profile());
+
+{
+  const docRef = doc(db, 'users', props.id);
+  getDoc(docRef)
+      .then(snap => {
+        if (snap.exists()) {
+          const data = snap.data();
+          profile.value.displayName = data.displayName;
+          profile.value.photoURL = data.photoURL;
+        }
+        console.log(profile.value);
+      })
+      .catch(error => {
+        console.log('Error: ', error.code, error.message);
+      });
 }
+
+
 </script>
 
 <template>

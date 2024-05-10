@@ -1,9 +1,5 @@
-<script>
+<script setup>
 import StoryList from "../components/StoryList.vue";
-export default {
-  name: "Browser",
-  components: {StoryList}
-}
 </script>
 
 <template>

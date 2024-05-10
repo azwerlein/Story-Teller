@@ -1,23 +1,18 @@
-<script>
+<script setup>
 import {router} from "../js/router.js";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
-export default {
-  name: "Login",
-  methods: {
-    login() {
-      let username = document.getElementById("emailInput").value;
-      let password = document.getElementById("passwordInput").value;
-      const auth = getAuth();
-      signInWithEmailAndPassword(auth, username, password)
-          .then(() => {
-            router.push('home');
-          })
-          .catch((error) => {
-            console.log('Error: ', error.code, error.message);
-          });
-    },
-  },
+function login() {
+  let username = document.getElementById("emailInput").value;
+  let password = document.getElementById("passwordInput").value;
+  const auth = getAuth();
+  signInWithEmailAndPassword(auth, username, password)
+      .then(() => {
+        router.push('home');
+      })
+      .catch((error) => {
+        console.log('Error: ', error.code, error.message);
+      });
 }
 </script>
 

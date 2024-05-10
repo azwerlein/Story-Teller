@@ -1,10 +1,9 @@
-<script>
+<script setup>
 import StoryList from "../components/StoryList.vue";
 import CreateStoryModal from "../components/CreateStoryModal.vue";
-export default {
-  name: "Home",
-  components: {CreateStoryModal, StoryList}
-}
+
+
+
 </script>
 
 <template>
