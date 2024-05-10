@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink :to="{name: 'charactereditor', params: {id: 1}}">
+  <RouterLink :to="{name: 'charactereditor', params: {characterId: 1}}">
     <div class="card bg-slate-600 text-black">
       <div class="card-body">
         <h2>{{ character.name }}</h2>
