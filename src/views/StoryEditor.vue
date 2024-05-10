@@ -5,7 +5,7 @@ import CharacterList from "../components/CharacterList.vue";
 import {onMounted, ref} from "vue";
 import {addDoc, collection, getDocs, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
-import Character from "../models/Character.js";
+import Character, {characterConverter} from "../models/Character.js";
 
 const props = defineProps({
   storyId: {
@@ -16,7 +16,7 @@ const props = defineProps({
 
 
 const characters = ref([]);
-const collectionRef = collection(db, 'stories', props.storyId, 'characters');
+const collectionRef = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
 
 {
   getDocs(query(collectionRef))
@@ -31,7 +31,7 @@ const collectionRef = collection(db, 'stories', props.storyId, 'characters');
 }
 
 function addCharacter() {
-  addDoc(collectionRef, {name: 'Tom',})
+  addDoc(collectionRef, new Character('Tom'))
       .catch(error => {
         console.log('ERROR: ', error.code, error.data);
       });

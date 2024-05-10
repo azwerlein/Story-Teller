@@ -1,6 +1,6 @@
 <script setup>
 
-import {Story} from "../models/Story.js";
+import Story from "../models/Story.js";
 
 defineProps({
   story: {

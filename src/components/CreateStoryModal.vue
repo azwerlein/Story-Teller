@@ -2,6 +2,7 @@
 import Modal from "./Modal.vue";
 import {UserSession} from "../models/User.js";
 import {ref} from "vue";
+import Story from "../models/Story.js";
 
 const props = defineProps({
   userSession: UserSession,
@@ -22,10 +23,7 @@ function createStory() {
     console.log('Error! Must be logged in.');
   }
 
-  emit('createStory', {
-    title: title,
-    authorId: authorId,
-  });
+  emit('createStory', new Story(null, title, authorId));
   modal.value.closeModal();
 
 }

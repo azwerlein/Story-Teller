@@ -5,7 +5,7 @@ import {UserSession} from "../models/User.js";
 import {db} from "../js/firebase.js";
 import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {onMounted, ref} from "vue";
-import {storyFromFirebase} from "../models/Story.js";
+import {storyConverter} from "../models/Story.js";
 
 const props = defineProps({
   userSession: {
@@ -17,11 +17,12 @@ const stories = ref([]);
 
 onMounted(() => {
   if (props.userSession) {
-    const q = query(collection(db, 'stories'), where('authorId', '==', props.userSession.user.uid));
+    const collectionRef = collection(db, 'stories').withConverter(storyConverter);
+    const q = query(collectionRef, where('authorId', '==', props.userSession.user.uid));
     getDocs(q)
         .then(snapshot => {
           snapshot.forEach(doc => {
-            stories.value.push(storyFromFirebase(doc.id, doc.data()));
+            stories.value.push(doc.data());
           });
         })
         .catch(error => {
@@ -33,7 +34,7 @@ onMounted(() => {
 function createStory(story) {
   let uid = story.title.split(' ').join('-');
   uid = uid.toLowerCase();
-  const docRef = doc(db, 'stories', uid);
+  const docRef = doc(db, 'stories', uid).withConverter(storyConverter);
   setDoc(docRef, story)
       .catch(error => {
         console.log('Error: ', error.code, error.data);
