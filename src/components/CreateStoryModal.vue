@@ -1,14 +1,39 @@
 <script setup>
 import Modal from "./Modal.vue";
+import {UserSession} from "../models/User.js";
+import {ref} from "vue";
+
+const props = defineProps({
+  userSession: UserSession,
+});
+
+const modal = ref(null);
+
+const emit = defineEmits(['createStory']);
 
 function createStory() {
+  let title = document.getElementById('titleInput').value;
+  let authorId = props.userSession?.user.uid;
+  if (!title) {
+    console.log('Error! Title is required.');
+    return;
+  }
+  if (!authorId) {
+    console.log('Error! Must be logged in.');
+  }
+
+  emit('createStory', {
+    title: title,
+    authorId: authorId,
+  });
+  modal.value.closeModal();
 
 }
 
 </script>
 
 <template>
-  <Modal>
+  <Modal ref="modal">
     <template #default>
       <h3 class="font-bold text-lg">New Story</h3>
       <label for="titleInput" class="label">Title: </label>

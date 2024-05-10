@@ -4,11 +4,13 @@ import {ref} from "vue";
 import CommentSection from "../components/CommentSection.vue";
 
 const props = defineProps({
-  id: {
+  characterId: {
     type: String,
     required: false,
   }
 });
+
+const editMode = ref(false);
 
 const character = ref({
   name: 'Morag',
@@ -17,10 +19,22 @@ const overview = ref('Lorem ipsum dolor sit amet, consectetur adipiscing elit, s
 const appearance = ref("Morag has long black hair and wears an officer's uniform.");
 const personality = ref('Morag is very loyal to her home country.');
 
+const overviewElement = ref(null);
+const appearanceElement = ref(null);
+const personalityElement = ref(null);
+
+function toggleEditMode() {
+  editMode.value = !editMode.value;
+  overviewElement.value.contentEditable = editMode.value;
+  appearanceElement.value.contentEditable = editMode.value;
+  personalityElement.value.contentEditable = editMode.value;
+}
+
 </script>
 
 <template>
   <div class="w-10/12 m-auto">
+    <button class="btn btn-neutral" @click="toggleEditMode">Edit page</button>
     <div id="content" class="overflow-y-auto">
       <div class="float-right text-gray-900 bg-amber-300 border-4 rounded-md border-amber-950 p-8">
         <div class="max-w-64">
@@ -31,19 +45,19 @@ const personality = ref('Morag is very loyal to her home country.');
       </div>
       <section class="">
         <h1 class="text-xl">{{ character.name }}</h1>
-        <p>
+        <p ref="overviewElement">
           {{ overview }}
         </p>
       </section>
       <section class="">
         <h1 class="text-lg">Appearance</h1>
-        <p>
+        <p ref="appearanceElement">
           {{ appearance }}
         </p>
       </section>
       <section class="">
         <h1 class="text-lg">Personality</h1>
-        <p>
+        <p ref="personalityElement">
           {{ personality }}
         </p>
       </section>

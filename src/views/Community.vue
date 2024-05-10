@@ -18,7 +18,6 @@ export default {
     getDocs(q)
         .then(snap => {
           snap.forEach(doc => {
-            console.log(doc.data());
             let profile = new Profile();
             profile.displayName = doc.data().displayName;
             profile.photoURL = doc.data().photoURL;

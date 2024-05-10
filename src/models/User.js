@@ -1,13 +1,9 @@
 export function Profile() {
-    return {
-        displayName: '',
-        photoURL: '',
-    };
+    this.displayName = '';
+    this.photoURL = '';
 }
 
 export function UserSession(authUser, profile) {
-    return {
-        user: authUser,
-        profile: profile,
-    }
+    this.user = authUser;
+    this.profile= profile;
 }

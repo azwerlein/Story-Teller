@@ -8,7 +8,7 @@ import {auth, db} from "./js/firebase.js";
 import {UserSession} from "./models/User.js";
 
 
-const authUser = ref(0);
+const authUser = ref();
 auth.onAuthStateChanged(user => {
   if (user) {
     const docRef = doc(db, 'users', user.uid);
@@ -34,27 +34,24 @@ const loggedIn = computed(() => {
 </script>
 
 <template>
-  <header class="bg-primary flex justify-between text-slate-50 p-4">
+  <header class="bg-base-300 flex justify-between p-4 h-32">
     <div class="flex-auto flex justify-around">
-      <h1 class="font-bold text-xl">
+      <h1 class="text-4xl">
         <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
       </h1>
-      <h2>
-        <RouterLink :to="{name: 'browse'}">Browse</RouterLink>
-      </h2>
-      <h2>
+      <h2 class="text-2xl">
         <RouterLink :to="{name: 'community'}">Community</RouterLink>
       </h2>
     </div>
     <div v-if="loggedIn">
-      <div class="flex-auto flex justify-end">
+      <div class="flex-auto flex justify-around">
         <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
-          <img tabindex="0" role="button" class="rounded-full border-4 border-slate-400 h-20"
+          <img tabindex="0" role="button" class="rounded-full border-4 border-neutral-content h-16"
                :src="authUser.profile?.photoURL"
                alt="Profile">
           <ul tabindex="0"
-              class="dropdown-content z-[1] menu shadow bg-secondary border-4 border-slate-400 rounded-box p-2 w-40">
+              class="dropdown-content z-[1] menu shadow bg-neutral border-4 border-slate-400 rounded-box p-2 w-40">
             <li>
               <RouterLink :to="{name: 'profile', params: {id: authUser.user.uid}}">Profile</RouterLink>
             </li>
@@ -69,8 +66,8 @@ const loggedIn = computed(() => {
     </div>
   </header>
 
-  <main>
-    <RouterView :auth-user="authUser"></RouterView>
+  <main class="bg-base-100">
+    <RouterView :user-session="authUser"></RouterView>
   </main>
 
 </template>

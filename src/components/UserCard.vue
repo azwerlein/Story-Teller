@@ -15,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink :to="{name: 'profile', params: {id: this.id}}">
+  <RouterLink :to="{name: 'profile', params: {id: id}}">
     <div class="card bg-neutral-600 text-black border-4 border-amber-300">
       <div class="card-body">
         <div class="grid grid-cols-3">

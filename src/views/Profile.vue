@@ -3,6 +3,7 @@ import {db} from "../js/firebase.js";
 import {doc, getDoc} from "firebase/firestore";
 import {Profile} from "../models/User.js";
 import {ref} from "vue";
+import CommentSection from "../components/CommentSection.vue";
 
 const props = defineProps({
   id: {
@@ -34,10 +35,10 @@ const profile = ref(new Profile());
 
 <template>
   <div v-if="profile" class="w-32 m-auto content-ce">
-    <div class="profile">
-      <img class="rounded-full border-4 border-slate-400" :src="profile.photoURL" alt="Profile Picture"/>
-      <div class="level">
-        <p class="rounded-full border-2 border-slate-400 p-auto">3</p>
+    <div class="profile relative">
+      <img class="rounded-full border-4 border-neutral-content" :src="profile.photoURL" alt="Profile Picture"/>
+      <div class="absolute right-0 bottom-0 rounded-full border-2 border-neutral-content px-2 bg-base-100">
+        <p class="">3</p>
       </div>
     </div>
     <div class="progress">
@@ -45,18 +46,9 @@ const profile = ref(new Profile());
     </div>
     <p>{{ profile.displayName }}</p>
   </div>
+  <CommentSection></CommentSection>
 </template>
 
 <style scoped>
-.profile {
-  position: relative;
-}
-
-.profile > .level {
-  position: absolute;
-  right: 0;
-  bottom: 10%;
-  width: auto;
-}
 
 </style>

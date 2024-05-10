@@ -1,22 +1,21 @@
 <script setup>
 
+import {Story} from "../models/Story.js";
+
 defineProps({
-  title: {
-    type: String,
+  story: {
+    type: Story,
     required: true,
-  },
-  author: {
-    type: String,
   }
 });
 </script>
 
 <template>
-  <RouterLink :to="{name: 'storyeditor', params: {id: 1}}">
-    <div class="card bg-neutral-600 text-black border-4 border-amber-300">
+  <RouterLink :to="{name: 'storyeditor', params: {storyId: story.uid}}">
+    <div class="card bg-neutral text-neutral-content border-4 border-primary my-4">
       <div class="card-body">
-        <h2>{{ title }}</h2>
-        <h3>{{ author }}</h3>
+        <h2>{{ story.title }}</h2>
+        <h3>{{ story.author }}</h3>
       </div>
     </div>
   </RouterLink>
