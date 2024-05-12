@@ -7,13 +7,15 @@ import StoryEditor from "../views/StoryEditor.vue";
 import CharacterEditor from "../views/CharacterEditor.vue";
 
 import {createRouter, createWebHistory} from "vue-router";
+import EditProfile from "../views/EditProfile.vue";
 
 const routes = [
     { path: '/', name: 'home', component: Home, alias: '/home' },
     { path: '/community', name: 'community', component: Community },
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: AccountCreation },
-    { path: '/user/:id', name: 'profile', component: Profile, props: true },
+    { path: '/user/:id', name: 'profile', component: Profile, props: true, },
+    { path: '/user/:id/edit', name: 'editprofile', component: EditProfile, props: true, },
     {
         path: '/story/:storyId', children: [
             { path: '', name: 'storyeditor', props: true, component: StoryEditor },

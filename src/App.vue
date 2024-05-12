@@ -34,7 +34,7 @@ const loggedIn = computed(() => {
 </script>
 
 <template>
-  <header class="bg-base-300 flex justify-between p-4 h-32">
+  <header class="bg-base-300 flex justify-between p-4 h-32 border-b-2 border-neutral">
     <div class="flex-auto flex justify-around">
       <h1 class="text-4xl">
         <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
@@ -70,7 +70,7 @@ const loggedIn = computed(() => {
     <RouterView :user-session="authUser"></RouterView>
   </main>
 
-  <footer class="flex justify-center w-full p-20 bg-neutral/50">
+  <footer class="flex justify-center w-full p-20 bg-neutral/50 border-t-2 border-neutral">
     <p>&copy; 2024 Cactus corp.</p>
   </footer>
 

@@ -6,12 +6,16 @@ import {onMounted, ref} from "vue";
 import {addDoc, collection, getDocs, onSnapshot, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import Character, {characterConverter} from "../models/Character.js";
+import {UserSession} from "../models/User.js";
 
 const props = defineProps({
   storyId: {
     type: String,
     required: true,
   },
+  userSession: {
+    type: UserSession,
+  }
 });
 
 

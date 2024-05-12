@@ -64,6 +64,7 @@ function createStory(story) {
       <StoryList :stories="userStories"></StoryList>
     </div>
     <div class="col-start-2 col-span-3 border-x-2 border-neutral p-4">
+      <h2 class="text-xl">Feed</h2>
       <StoryList :stories="stories"></StoryList>
     </div>
     <div class="col-start-5 bg-base-200 p-4">

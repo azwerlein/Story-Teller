@@ -1,7 +1,7 @@
 <script setup>
 import {db} from "../js/firebase.js";
 import {doc, getDoc} from "firebase/firestore";
-import {Profile} from "../models/User.js";
+import {profileConverter, UserSession} from "../models/User.js";
 import {ref} from "vue";
 import CommentSection from "../components/CommentSection.vue";
 
@@ -10,18 +10,19 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  userSession: {
+    type: UserSession,
+  },
 });
 
-const profile = ref(new Profile());
+const profile = ref(null);
 
 {
-  const docRef = doc(db, 'users', props.id);
+  const docRef = doc(db, 'users', props.id).withConverter(profileConverter);
   getDoc(docRef)
       .then(snap => {
         if (snap.exists()) {
-          const data = snap.data();
-          profile.value.displayName = data.displayName;
-          profile.value.photoURL = data.photoURL;
+          profile.value = snap.data();
         }
         console.log(profile.value);
       })
@@ -29,6 +30,9 @@ const profile = ref(new Profile());
         console.log('Error: ', error.code, error.message);
       });
 }
+
+const storiesTab = ref(null);
+const badgesTab = ref(null);
 
 
 </script>
@@ -45,8 +49,35 @@ const profile = ref(new Profile());
 
     </div>
     <p>{{ profile.displayName }}</p>
+    <div v-if="userSession?.user.uid === id" class="flex justify-center">
+      <RouterLink class="btn" :to="{name: 'editprofile', params: {id: id, userSession: userSession}}">Edit Profile</RouterLink>
+    </div>
+    <div v-else class="flex justify-center">
+      <button class="btn">Follow</button>
+    </div>
+    <div>
+      <div role="tablist" class="tabs tabs-boxed">
+        <a role="tab"
+           class="tab tab-active"
+           @click=""
+        >Stories</a>
+        <a role="tab"
+           class="tab"
+           @click=""
+        >Badges</a>
+      </div>
+      <div ref="storiesRef">
+
+      </div>
+      <div ref="badgesRef">
+
+      </div>
+    </div>
+    <!--    <CommentSection></CommentSection>-->
   </div>
-  <CommentSection></CommentSection>
+  <div v-else class="flex justify-center">
+    <h1 class="text-3xl">That profile doesn't exist.</h1>
+  </div>
 </template>
 
 <style scoped>
