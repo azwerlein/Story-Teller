@@ -1,25 +1,28 @@
 <script setup>
 
-
-import {ref} from "vue";
-import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {db, storage} from "../js/firebase.js";
-import {profileConverter, UserSession} from "../models/User.js";
 import ImageEditorModal from "../components/imageEditor/ImageEditorModal.vue";
+
+// To differentiate Vue and Firebase refs, use an alias.
+import {ref as vRef} from "vue";
+import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {getDownloadURL, uploadBytes} from "firebase/storage";
+import {ref} from "firebase/database";
+
+import {db, storage} from "../js/firebase.js";
+import {profileConverter} from "../models/User.js";
+import {useSessionStore} from "../js/store.js";
+
+const store = useSessionStore();
 
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
-  userSession: {
-    type: UserSession,
-  },
 });
 
-const profile = ref(null);
-const picture = ref(null);
+const profile = vRef(null);
+const picture = vRef(null);
 
 const docRef = doc(db, 'users', props.id).withConverter(profileConverter);
 
@@ -75,7 +78,7 @@ function updatePicture(blob) {
 
 <template>
   <div>
-    <div v-if="userSession?.user.id === id">
+    <div v-if="store.userSession?.user.uid === id">
       <label class="label" for="nameInput">Display Name</label>
       <input class="form-control w-full"
              type="text"

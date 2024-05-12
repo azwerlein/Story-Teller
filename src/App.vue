@@ -1,36 +1,23 @@
 <script setup>
-import {computed, ref} from "vue";
 import {signOut} from "firebase/auth";
 import {doc, getDoc} from 'firebase/firestore';
 
-import {auth, db} from "./js/firebase.js";
+import {auth} from "./js/firebase.js";
 
 import {UserSession} from "./models/User.js";
+import {useSessionStore} from "./js/store.js";
+import {onMounted} from "vue";
 
-
-const authUser = ref();
-auth.onAuthStateChanged(user => {
-  if (user) {
-    const docRef = doc(db, 'users', user.uid);
-    getDoc(docRef)
-        .then(snapshot => {
-          authUser.value = new UserSession(user, snapshot.data());
-        })
-        .catch(error => {
-          console.log('Error: ', error.code, error.data);
-        });
-  } else {
-    authUser.value = null;
-  }
-});
+const store = useSessionStore();
 
 function logout() {
   signOut(auth);
 }
 
-const loggedIn = computed(() => {
-  return authUser.value?.profile;
+onMounted(() => {
+  store.init();
 });
+
 </script>
 
 <template>
@@ -43,17 +30,17 @@ const loggedIn = computed(() => {
         <RouterLink :to="{name: 'community'}">Community</RouterLink>
       </h2>
     </div>
-    <div v-if="loggedIn">
+    <div v-if="store.userSession?.profile">
       <div class="flex-auto flex justify-around">
         <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
           <img tabindex="0" role="button" class="rounded-full border-4 border-neutral-content h-16"
-               :src="authUser.profile?.photoURL"
+               :src="store.userSession.profile?.photoURL"
                alt="Profile">
           <ul tabindex="0"
               class="dropdown-content z-[1] menu shadow bg-neutral border-4 border-slate-400 rounded-box p-2 w-40">
             <li>
-              <RouterLink :to="{name: 'profile', params: {id: authUser.user.uid}}">Profile</RouterLink>
+              <RouterLink :to="{name: 'profile', params: {id: store.userSession.user.uid}}">Profile</RouterLink>
             </li>
             <li><a>Settings</a></li>
             <li><a v-on:click="logout">Logout</a></li>
@@ -67,7 +54,7 @@ const loggedIn = computed(() => {
   </header>
 
   <main class="bg-base-100">
-    <RouterView :user-session="authUser"></RouterView>
+    <RouterView></RouterView>
   </main>
 
   <footer class="flex justify-center w-full p-20 bg-neutral/50 border-t-2 border-neutral">

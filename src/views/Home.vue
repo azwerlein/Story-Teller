@@ -1,17 +1,13 @@
 <script setup>
 import StoryList from "../components/StoryList.vue";
 import CreateStoryModal from "../components/CreateStoryModal.vue";
-import {UserSession} from "../models/User.js";
 import {db} from "../js/firebase.js";
 import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {onMounted, ref} from "vue";
 import {storyConverter} from "../models/Story.js";
+import {useSessionStore} from "../js/store.js";
 
-const props = defineProps({
-  userSession: {
-    type: UserSession,
-  },
-});
+const store = useSessionStore();
 
 const stories = ref([]);
 const userStories = ref([]);
@@ -28,8 +24,8 @@ onMounted(() => {
         console.log(error);
       });
 
-  if (props.userSession) {
-    const q = query(collectionRef, where('authorId', '==', props.userSession.user.uid));
+  if (store.userSession) {
+    const q = query(collectionRef, where('authorId', '==', store.userSession.user.uid));
     getDocs(q)
         .then(snapshot => {
           snapshot.forEach(doc => {
@@ -57,8 +53,9 @@ function createStory(story) {
 <template>
   <div class="grid grid-cols-5">
     <div class="col-start-1 bg-base-200 p-4">
-      <CreateStoryModal v-if="userSession"
-                        :user-session="userSession"
+      <h2 class="text-xl">Your Stories</h2>
+      <CreateStoryModal v-if="store.userSession"
+                        :user-session="store.userSession"
                         @create-story="createStory"
       ></CreateStoryModal>
       <StoryList :stories="userStories"></StoryList>
@@ -69,7 +66,7 @@ function createStory(story) {
     </div>
     <div class="col-start-5 bg-base-200 p-4">
       <!--      // Placeholder-->
-      <h1>Inspiration list</h1>
+      <h1>Explore</h1>
       <div class="my-2 bg-neutral card-body">
         <h1>inspiration placeholder</h1>
       </div>

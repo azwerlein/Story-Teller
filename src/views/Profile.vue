@@ -4,14 +4,14 @@ import {doc, getDoc} from "firebase/firestore";
 import {profileConverter, UserSession} from "../models/User.js";
 import {ref} from "vue";
 import CommentSection from "../components/CommentSection.vue";
+import {useSessionStore} from "../js/store.js";
+
+const store = useSessionStore();
 
 const props = defineProps({
   id: {
     type: String,
     required: true,
-  },
-  userSession: {
-    type: UserSession,
   },
 });
 
@@ -49,8 +49,8 @@ const badgesTab = ref(null);
 
     </div>
     <p>{{ profile.displayName }}</p>
-    <div v-if="userSession?.user.uid === id" class="flex justify-center">
-      <RouterLink class="btn" :to="{name: 'editprofile', params: {id: id, userSession: userSession}}">Edit Profile</RouterLink>
+    <div v-if="store.userSession?.user.uid === id" class="flex justify-center">
+      <RouterLink class="btn" :to="{name: 'editprofile', params: {id: id}}">Edit Profile</RouterLink>
     </div>
     <div v-else class="flex justify-center">
       <button class="btn">Follow</button>
