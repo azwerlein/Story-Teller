@@ -3,7 +3,7 @@
 import CharacterList from "../components/CharacterList.vue";
 
 import {onMounted, ref} from "vue";
-import {addDoc, collection, getDocs, query} from "firebase/firestore";
+import {addDoc, collection, getDocs, onSnapshot, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import Character, {characterConverter} from "../models/Character.js";
 
@@ -17,6 +17,8 @@ const props = defineProps({
 
 const characters = ref([]);
 const collectionRef = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
+const q = query(collectionRef);
+
 
 {
   getDocs(query(collectionRef))
@@ -40,14 +42,16 @@ function addCharacter() {
 </script>
 
 <template>
-  {{ storyId }}
-  <button class="btn"
-          @click="addCharacter"
-  >Add dummy character
-  </button>
-  <CharacterList
-      :characters="characters"
-  ></CharacterList>
+  <div class="m-auto w-10/12">
+    {{ storyId }}
+    <button class="btn"
+            @click="addCharacter"
+    >Add dummy character
+    </button>
+    <CharacterList
+        :characters="characters"
+    ></CharacterList>
+  </div>
 </template>
 
 <style scoped>

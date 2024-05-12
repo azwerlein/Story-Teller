@@ -14,15 +14,26 @@ const props = defineProps({
 });
 
 const stories = ref([]);
+const userStories = ref([]);
 
 onMounted(() => {
+  const collectionRef = collection(db, 'stories').withConverter(storyConverter);
+  getDocs(query(collectionRef))
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          stories.value.push(doc.data());
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
   if (props.userSession) {
-    const collectionRef = collection(db, 'stories').withConverter(storyConverter);
     const q = query(collectionRef, where('authorId', '==', props.userSession.user.uid));
     getDocs(q)
         .then(snapshot => {
           snapshot.forEach(doc => {
-            stories.value.push(doc.data());
+            userStories.value.push(doc.data());
           });
         })
         .catch(error => {
@@ -44,15 +55,18 @@ function createStory(story) {
 </script>
 
 <template>
-  <div class="grid grid-cols-6 gap-12">
-    <div class="col-start-3 col-span-2">
+  <div class="grid grid-cols-5">
+    <div class="col-start-1 bg-base-200 p-4">
       <CreateStoryModal v-if="userSession"
                         :user-session="userSession"
                         @create-story="createStory"
       ></CreateStoryModal>
+      <StoryList :stories="userStories"></StoryList>
+    </div>
+    <div class="col-start-2 col-span-3 border-x-2 border-neutral p-4">
       <StoryList :stories="stories"></StoryList>
     </div>
-    <div class="col-start-5">
+    <div class="col-start-5 bg-base-200 p-4">
       <!--      // Placeholder-->
       <h1>Inspiration list</h1>
       <div class="my-2 bg-neutral card-body">

@@ -70,6 +70,10 @@ const loggedIn = computed(() => {
     <RouterView :user-session="authUser"></RouterView>
   </main>
 
+  <footer class="flex justify-center w-full p-20 bg-neutral/50">
+    <p>&copy; 2024 Cactus corp.</p>
+  </footer>
+
 </template>
 
 <style scoped>
