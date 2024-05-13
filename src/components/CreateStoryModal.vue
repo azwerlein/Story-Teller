@@ -31,7 +31,7 @@ function createStory() {
 </script>
 
 <template>
-  <Modal ref="modal">
+  <Modal ref="modal" button-text="New Story">
     <template #default>
       <h3 class="font-bold text-lg">New Story</h3>
       <label for="titleInput" class="label">Title: </label>

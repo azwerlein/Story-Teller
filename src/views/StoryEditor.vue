@@ -3,11 +3,12 @@
 import CharacterList from "../components/CharacterList.vue";
 
 import {ref} from "vue";
-import {addDoc, collection, query} from "firebase/firestore";
+import {addDoc, collection, doc, deleteDoc, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
-import Character, {characterConverter} from "../models/Character.js";
+import {characterConverter} from "../models/Character.js";
 import {useSessionStore} from "../js/store.js";
 import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
+import CreateCharacterModal from "../components/CreateCharacterModal.vue";
 
 const store = useSessionStore();
 
@@ -18,18 +19,23 @@ const props = defineProps({
   },
 });
 
-
 const characters = ref([]);
+
 const collectionRef = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
-
-const q = query(collectionRef);
-const unsubscribe = useCollectionSnapshotListener(q, characters);
+useCollectionSnapshotListener(query(collectionRef), characters);
 
 
-function addCharacter() {
-  addDoc(collectionRef, new Character('Tom'))
+function addCharacter(character) {
+  addDoc(collectionRef, character)
       .catch(error => {
         console.log('ERROR: ', error.code, error.data);
+      });
+}
+
+function deleteCharacter(uid) {
+  deleteDoc(doc(collectionRef, uid))
+      .catch(error => {
+        console.error('Error: ', error.code, error.message);
       });
 }
 
@@ -38,12 +44,10 @@ function addCharacter() {
 <template>
   <div class="m-auto w-10/12">
     {{ storyId }}
-    <button class="btn"
-            @click="addCharacter"
-    >Add dummy character
-    </button>
+    <CreateCharacterModal @create-character="addCharacter"></CreateCharacterModal>
     <CharacterList
         :characters="characters"
+        @delete-character="deleteCharacter"
     ></CharacterList>
   </div>
 </template>

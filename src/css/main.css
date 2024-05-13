@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.invalid-message {
+    @apply text-red-600 invisible;
+    visibility: hidden;
+}
+
+.invalid {
+    @apply border-red-600 border-2;
+
+    & + .invalid-message {
+        @apply visible;
+    }
+}

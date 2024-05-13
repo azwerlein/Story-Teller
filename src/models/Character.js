@@ -1,4 +1,5 @@
-export default function Character(name) {
+export default function Character(uid, name) {
+    this.uid = uid;
     this.name = name;
 }
 
@@ -10,7 +11,7 @@ export const characterConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Character(data.name);
+        return new Character(snapshot.id, data.name);
     }
 }
 

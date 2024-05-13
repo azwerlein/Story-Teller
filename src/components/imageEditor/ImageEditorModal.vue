@@ -111,7 +111,7 @@ function resetCanvas() {
 </script>
 
 <template>
-  <Modal ref="modal" hide-button>
+  <Modal ref="modal">
     <template #default>
       <h3>Image Editor</h3>
       <canvas ref="canvasElement"

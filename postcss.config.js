@@ -1,6 +1,11 @@
+import nested from "postcss-nested";
+import tailwindConfig from "tailwindcss";
+import autoprefixer from "autoprefixer";
+
 export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+    plugins: [
+        nested,
+        tailwindConfig,
+        autoprefixer,
+    ],
 }

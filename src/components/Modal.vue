@@ -3,8 +3,9 @@
 import {ref} from "vue";
 
 defineProps({
-  hideButton: {
-    type: Boolean,
+  // If this is undefined, the button is hidden.
+  buttonText: {
+    type: String,
   }
 });
 
@@ -26,7 +27,7 @@ function closeModal() {
 </script>
 
 <template>
-  <button v-if="!hideButton" class="btn" v-on:click="showModal">New story</button>
+  <button v-if="buttonText" class="btn" v-on:click="showModal">{{ buttonText }}</button>
   <dialog ref="modal" class="modal">
     <div class="modal-box">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" v-on:click="closeModal">✕</button>
