@@ -47,15 +47,15 @@ function createStory(story) {
     <div class="col-start-5 bg-base-200 p-4">
       <!--      // Placeholder-->
       <h1>Explore</h1>
-      <div class="my-2 bg-neutral card-body">
-        <h1>inspiration placeholder</h1>
-      </div>
-      <div class="my-2 bg-neutral card-body">
-        <h1>inspiration placeholder</h1>
-      </div>
-      <div class="my-2 bg-neutral card-body">
-        <h1>inspiration placeholder</h1>
-      </div>
+<!--      <div class="my-2 bg-neutral card-body">-->
+<!--        <h1>inspiration placeholder</h1>-->
+<!--      </div>-->
+<!--      <div class="my-2 bg-neutral card-body">-->
+<!--        <h1>inspiration placeholder</h1>-->
+<!--      </div>-->
+<!--      <div class="my-2 bg-neutral card-body">-->
+<!--        <h1>inspiration placeholder</h1>-->
+<!--      </div>-->
     </div>
   </div>
 </template>

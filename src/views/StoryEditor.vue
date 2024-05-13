@@ -25,17 +25,6 @@ const collectionRef = collection(db, 'stories', props.storyId, 'characters').wit
 const q = query(collectionRef);
 const unsubscribe = useCollectionSnapshotListener(q, characters);
 
-// {
-//   getDocs(query(collectionRef))
-//       .then(snapshot => {
-//         snapshot.forEach(doc => {
-//           characters.value.push(doc.data());
-//         });
-//       })
-//       .catch(error => {
-//         console.log('ERROR: ', error.code, error.data);
-//       });
-// }
 
 function addCharacter() {
   addDoc(collectionRef, new Character('Tom'))
