@@ -13,7 +13,7 @@ function logout() {
 </script>
 
 <template>
-  <header class="bg-base-300 flex justify-between p-4 border-b-2 border-neutral">
+  <header class="bg-primary flex justify-between p-4 border-b-2 border-neutral">
     <h1>
       <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
     </h1>
@@ -24,12 +24,14 @@ function logout() {
       <div class="flex-auto flex justify-end">
         <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
-                    <img v-if="store.userSession.profile?.photoURL"
-                         tabindex="0" role="button" class="rounded-full border-4 border-neutral-content h-16"
-                         :src="store.userSession.profile?.photoURL"
-                         alt="Profile">
-          <div v-else class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16" tabindex="0" role="button">
-            <i class="fa-regular fa-user m-auto"></i>
+          <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16" tabindex="0"
+               role="button">
+            <img v-if="store.userSession.profile?.photoURL"
+                 tabindex="0" role="button"
+                 :src="store.userSession.profile?.photoURL"
+                 alt="Profile"
+                 class="rounded-full">
+            <i v-else class="fa-regular fa-user m-auto"></i>
           </div>
           <ul tabindex="0"
               class="dropdown-content z-[1] menu shadow bg-neutral border-4 border-slate-400 rounded-box p-2 w-40">

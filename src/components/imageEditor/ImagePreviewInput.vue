@@ -1,45 +1,47 @@
-<script>
+<script setup>
 import ImageEditorModal from "./ImageEditorModal.vue";
-export default {
-  name: "ImagePreviewInput",
-  components: {ImageEditorModal},
-  props: {
-    id: {
-      type: String,
-      required: false,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
+import {ref} from "vue";
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: false,
   },
-  methods: {
-    editPicture(event) {
-      console.log(event)
-      this.scale = 1;
-      const target = event.target;
-      if (!target || !target.files) {
-        return;
-      }
-      this.picture = target.files[0];
-      let reader = new FileReader();
-      reader.onloadend = () => {
-        const image = new Image();
-        image.src = reader.result;
-        image.onload = () => {
-          this.$refs.imageEditor.showPreview(image);
-        }
-      }
-      reader.readAsDataURL(this.picture);
-    },
-    updatePicture(blob) {
-      console.log(blob)
-      this.$emit('saveImage', blob);
-      const url = URL.createObjectURL(blob);
-      this.$refs.preview.onload = () => URL.revokeObjectURL(url);
-      this.$refs.preview.src = url;
+  label: {
+    type: String,
+    required: true,
+  },
+});
+
+const imageEditor = ref(null);
+
+const scale = ref(1);
+const picture = ref(null);
+
+function editPicture(event) {
+  console.log(event)
+  scale.value = 1;
+  const target = event.target;
+  if (!target || !target.files) {
+    return;
+  }
+  picture.value = target.files[0];
+  let reader = new FileReader();
+  reader.onloadend = () => {
+    const image = new Image();
+    image.src = reader.result;
+    image.onload = () => {
+      imageEditor.value.showPreview(image);
     }
-  },
+  }
+  reader.readAsDataURL(picture.value);
+}
+function updatePicture(blob) {
+  console.log(blob);
+  this.$emit('saveImage', blob);
+  const url = URL.createObjectURL(blob);
+  this.$refs.preview.onload = () => URL.revokeObjectURL(url);
+  this.$refs.preview.src = url;
 }
 </script>
 
