@@ -6,37 +6,17 @@ import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore
 import {onMounted, ref} from "vue";
 import {storyConverter} from "../models/Story.js";
 import {useSessionStore} from "../js/store.js";
+import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
 
 const store = useSessionStore();
 
 const stories = ref([]);
 const userStories = ref([]);
 
-onMounted(() => {
-  const collectionRef = collection(db, 'stories').withConverter(storyConverter);
-  getDocs(query(collectionRef))
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          stories.value.push(doc.data());
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+const collectionRef = collection(db, 'stories').withConverter(storyConverter);
 
-  if (store.userSession) {
-    const q = query(collectionRef, where('authorId', '==', store.userSession.user.uid));
-    getDocs(q)
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            userStories.value.push(doc.data());
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-  }
-});
+useCollectionSnapshotListener(query(collectionRef), stories);
+useCollectionSnapshotListener(query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? '')), userStories);
 
 function createStory(story) {
   let uid = story.title.split(' ').join('-');

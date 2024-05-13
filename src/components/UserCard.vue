@@ -1,11 +1,7 @@
 <script setup>
 import {Profile} from "../models/User.js";
 
-defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
+const props = defineProps({
   profile: {
     type: Profile,
     required: true,
@@ -15,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink :to="{name: 'profile', params: {id: id}}">
+  <RouterLink :to="{name: 'profile', params: {id: props.profile.uid}}">
     <div class="card bg-neutral-600 text-black border-4 border-amber-300">
       <div class="card-body">
         <div class="grid grid-cols-3">

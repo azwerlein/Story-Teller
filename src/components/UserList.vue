@@ -14,9 +14,8 @@ defineProps({
   <div>
     <TransitionGroup name="list">
       <UserCard v-for="user in users"
-                :id="user.id"
-                :profile="user.profile"
-                :key="user.displayName"
+                :profile="user"
+                :key="user.uid"
                 class="my-2"></UserCard>
     </TransitionGroup>
   </div>

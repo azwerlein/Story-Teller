@@ -2,11 +2,12 @@
 
 import CharacterList from "../components/CharacterList.vue";
 
-import {onMounted, onUnmounted, ref} from "vue";
-import {addDoc, collection, getDocs, onSnapshot, query} from "firebase/firestore";
+import {ref} from "vue";
+import {addDoc, collection, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import Character, {characterConverter} from "../models/Character.js";
 import {useSessionStore} from "../js/store.js";
+import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
 
 const store = useSessionStore();
 
@@ -20,22 +21,9 @@ const props = defineProps({
 
 const characters = ref([]);
 const collectionRef = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
+
 const q = query(collectionRef);
-
-const unsubscribe = onSnapshot(q, snapshot => {
-  snapshot.docChanges().forEach(change => {
-    if (change.type === 'added') {
-      characters.value.push(change.doc.data());
-    } else if (change.type === 'removed') {
-      let char = change.doc.data();
-      characters.value.splice(characters.value.indexOf(char), 1);
-    }
-  });
-});
-
-onUnmounted(() => {
-  unsubscribe();
-})
+const unsubscribe = useCollectionSnapshotListener(q, characters);
 
 // {
 //   getDocs(query(collectionRef))

@@ -1,4 +1,5 @@
-export function Profile(displayName, photoURL) {
+export function Profile(id, displayName, photoURL) {
+    this.uid = id;
     this.displayName = displayName ?? '';
     this.photoURL = photoURL ?? '';
 }
@@ -12,7 +13,7 @@ export const profileConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Profile(data.displayName, data.photoURL);
+        return new Profile(snapshot.id, data.displayName, data.photoURL);
     }
 }
 
