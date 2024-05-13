@@ -1,17 +1,19 @@
-export default function Character(uid, name) {
+export default function Character(uid, storyId, name) {
     this.uid = uid;
     this.name = name;
+    this.storyId = storyId;
 }
 
 export const characterConverter = {
     toFirestore: character => {
         return {
+            storyId: character.storyId,
             name: character.name,
         }
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Character(snapshot.id, data.name);
+        return new Character(snapshot.id, data.storyId, data.name);
     }
 }
 

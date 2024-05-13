@@ -1,5 +1,6 @@
 <script setup>
 import Character from "../models/Character.js";
+import {router} from "../js/router.js";
 
 const props = defineProps({
   character: {
@@ -17,18 +18,18 @@ function deleteCharacter() {
 </script>
 
 <template>
-  <RouterLink :to="{name: 'charactereditor', params: {characterId: character.uid}}">
-    <div class="card bg-slate-600 text-black p-4">
+  <div>
+    <div class="card bg-neutral/50 text-neutral-content p-4 transition ease-linear hover:scale-100 hover:bg-neutral">
       <div class="flex justify-end w-full">
-        <button class="btn btn-secondary p-2"
-                @click="deleteCharacter"
-        >Delete</button>
+        <button @click="deleteCharacter"
+        ><i class="fa-solid fa-trash"></i></button>
       </div>
-      <div class="card-body">
+      <div class="card-body"
+           @click.self="router.push({name: 'charactereditor', params: {characterId: character.uid}})">
         <h2>{{ character.name }}</h2>
       </div>
     </div>
-  </RouterLink>
+  </div>
 </template>
 
 <style scoped>

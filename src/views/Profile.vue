@@ -8,6 +8,7 @@ import {useSessionStore} from "../js/store.js";
 import StoryList from "../components/StoryList.vue";
 import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
 import {storyConverter} from "../models/Story.js";
+import {router} from "../js/router.js";
 
 const store = useSessionStore();
 
@@ -33,6 +34,7 @@ const badgesTab = ref(null);
 
 <template>
   <div class="w-9/12 m-auto p-4">
+    <button class="btn btn-neutral" @click="router.go(-1)"><</button>
     <div v-if="profile" class="m-auto content-ce">
       <div class="flex">
         <div class="w-64">
