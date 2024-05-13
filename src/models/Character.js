@@ -13,3 +13,8 @@ export const characterConverter = {
         return new Character(data.name);
     }
 }
+
+export function CharacterDescription(name, description) {
+    this.name = name;
+    this.description = description;
+}

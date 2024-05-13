@@ -9,7 +9,9 @@ import {ref} from "vue";
 const users = ref([]);
 
 const q = query(collection(db, 'users'), limit(5));
-getDocs(q)
+
+new Promise(r => setTimeout(r, 0))
+    .then(() => getDocs(q))
     .then(snap => {
       snap.forEach(doc => {
         let profile = new Profile();

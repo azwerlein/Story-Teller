@@ -12,13 +12,25 @@ defineProps({
 
 <template>
   <div>
-    <UserCard v-for="user in users"
-              :id="user.id"
-              :profile="user.profile"
-              class="my-2"></UserCard>
+    <TransitionGroup name="list">
+      <UserCard v-for="user in users"
+                :id="user.id"
+                :profile="user.profile"
+                :key="user.displayName"
+                class="my-2"></UserCard>
+    </TransitionGroup>
   </div>
 </template>
 
 <style scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
 
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
 </style>
