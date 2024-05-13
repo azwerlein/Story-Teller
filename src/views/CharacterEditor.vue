@@ -76,7 +76,7 @@ function saveChanges() {
     </div>
     <h1 v-if="character">{{ character.name }}</h1>
     <div id="content" class="overflow-y-auto">
-      <div class="float-right text-gray-900 bg-amber-300 border-4 rounded-md border-amber-950 p-8">
+      <div class="float-right text-gray-900 bg-neutral rounded-md p-8">
         <div class="max-w-64">
           <img
               src="../assets/XC2-Morag-Artwork.png"

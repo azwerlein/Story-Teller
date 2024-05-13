@@ -20,7 +20,7 @@ const comments = ref([
 </script>
 
 <template>
-  <div class="bg-slate-700 p-8">
+  <div class="p-8">
     <Comment v-for="comment in comments"
              :comment="comment"
     ></Comment>

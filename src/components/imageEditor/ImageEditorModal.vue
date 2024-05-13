@@ -5,11 +5,11 @@ import {onMounted, ref} from "vue";
 const props = defineProps({
   width: {
     type: Number,
-    default: 256,
+    default: 512,
   },
   height: {
     type: Number,
-    default: 256,
+    default: 512,
   },
 });
 

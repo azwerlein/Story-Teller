@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="card bg-slate-500 my-2">
+  <div class="py-2 border-y-2 border-neutral">
     <div class="card-body">
       <h4>{{ props.comment.author }}</h4>
       <p>{{ props.comment.content }}</p>
