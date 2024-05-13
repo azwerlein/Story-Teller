@@ -11,9 +11,20 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  width: {
+    type: Number,
+    default: 256,
+  },
+  height: {
+    type: Number,
+    default: 256,
+  }
 });
 
+const emit = defineEmits(['saveImage']);
+
 const imageEditor = ref(null);
+const preview = ref(null);
 
 const scale = ref(1);
 const picture = ref(null);
@@ -38,10 +49,10 @@ function editPicture(event) {
 }
 function updatePicture(blob) {
   console.log(blob);
-  this.$emit('saveImage', blob);
+  emit('saveImage', blob);
   const url = URL.createObjectURL(blob);
-  this.$refs.preview.onload = () => URL.revokeObjectURL(url);
-  this.$refs.preview.src = url;
+  preview.value.onload = () => URL.revokeObjectURL(url);
+  preview.value.src = url;
 }
 </script>
 
@@ -57,6 +68,8 @@ function updatePicture(blob) {
 
   <ImageEditorModal ref="imageEditor"
                     @save-image="updatePicture"
+                    :width="width"
+                    :height="height"
   ></ImageEditorModal>
 </template>
 

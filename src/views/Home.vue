@@ -66,15 +66,6 @@ function createStory(story) {
       <!--      // Placeholder-->
       <h1>Explore</h1>
       <StoryList :stories="stories"></StoryList>
-      <!--      <div class="my-2 bg-neutral card-body">-->
-      <!--        <h1>inspiration placeholder</h1>-->
-      <!--      </div>-->
-      <!--      <div class="my-2 bg-neutral card-body">-->
-      <!--        <h1>inspiration placeholder</h1>-->
-      <!--      </div>-->
-      <!--      <div class="my-2 bg-neutral card-body">-->
-      <!--        <h1>inspiration placeholder</h1>-->
-      <!--      </div>-->
     </div>
   </div>
 </template>
