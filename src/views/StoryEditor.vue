@@ -28,7 +28,7 @@ useCollectionSnapshotListener(query(collectionRef), characters);
 function addCharacter(character) {
   addDoc(collectionRef, character)
       .catch(error => {
-        console.log('ERROR: ', error.code, error.data);
+        console.error('ERROR: ', error.code, error.data);
       });
 }
 

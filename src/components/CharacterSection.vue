@@ -1,6 +1,5 @@
 <script setup>
 
-import {ref} from "vue";
 import {CharacterDescription} from "../models/Character.js";
 
 const props = defineProps({
@@ -8,13 +7,11 @@ const props = defineProps({
     type: CharacterDescription,
     required: true,
   },
+  editMode: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-const editMode = ref(false);
-
-function toggleEdit() {
-  editMode.value = !editMode.value;
-}
 
 </script>
 

@@ -17,7 +17,7 @@ function deleteCharacter() {
 </script>
 
 <template>
-<!--  <RouterLink :to="{name: 'charactereditor', params: {characterId: 1}}">-->
+  <RouterLink :to="{name: 'charactereditor', params: {characterId: character.uid}}">
     <div class="card bg-slate-600 text-black p-4">
       <div class="flex justify-end w-full">
         <button class="btn btn-secondary p-2"
@@ -28,7 +28,7 @@ function deleteCharacter() {
         <h2>{{ character.name }}</h2>
       </div>
     </div>
-<!--  </RouterLink>-->
+  </RouterLink>
 </template>
 
 <style scoped>

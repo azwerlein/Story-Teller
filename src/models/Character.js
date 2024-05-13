@@ -19,3 +19,16 @@ export function CharacterDescription(name, description) {
     this.name = name;
     this.description = description;
 }
+
+export const characterDescriptionConverter = {
+    toFirestore: description => {
+        return {
+            name: description.name,
+            description: description.description,
+        }
+    },
+    fromFirestore: (snapshot, options) => {
+        const data = snapshot.data(options);
+        return new CharacterDescription(data.name, data.description);
+    }
+}

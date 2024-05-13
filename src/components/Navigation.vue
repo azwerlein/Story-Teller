@@ -14,10 +14,10 @@ function logout() {
 
 <template>
   <header class="bg-base-300 flex justify-between p-4 border-b-2 border-neutral">
-    <h1 class="text-4xl">
+    <h1>
       <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
     </h1>
-    <h2 class="text-2xl">
+    <h2>
       <RouterLink :to="{name: 'community'}">Community</RouterLink>
     </h2>
     <div v-if="store.userSession?.profile">

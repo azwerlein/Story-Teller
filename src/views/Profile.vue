@@ -1,10 +1,14 @@
 <script setup>
 import {db} from "../js/firebase.js";
-import {doc, getDoc} from "firebase/firestore";
+import {collection, doc, getDoc, query, where} from "firebase/firestore";
 import {profileConverter, UserSession} from "../models/User.js";
 import {ref} from "vue";
 import CommentSection from "../components/CommentSection.vue";
 import {useSessionStore} from "../js/store.js";
+import StoryList from "../components/StoryList.vue";
+import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
+import {characterConverter} from "../models/Character.js";
+import {storyConverter} from "../models/Story.js";
 
 const store = useSessionStore();
 
@@ -16,20 +20,11 @@ const props = defineProps({
 });
 
 const profile = ref(null);
+useDocumentSnapshotListener(doc(db, 'users', props.id).withConverter(profileConverter), profile);
 
-{
-  const docRef = doc(db, 'users', props.id).withConverter(profileConverter);
-  getDoc(docRef)
-      .then(snap => {
-        if (snap.exists()) {
-          profile.value = snap.data();
-        }
-        console.log(profile.value);
-      })
-      .catch(error => {
-        console.log('Error: ', error.code, error.message);
-      });
-}
+const stories = ref([]);
+const storyQuery = query(collection(db, 'stories').withConverter(storyConverter), where('authorId', '==', props.id));
+useCollectionSnapshotListener(storyQuery, stories);
 
 const storiesTab = ref(null);
 const badgesTab = ref(null);
@@ -58,18 +53,25 @@ const badgesTab = ref(null);
     <div>
       <div role="tablist" class="tabs tabs-boxed">
         <a role="tab"
+           class="tab"
+           @click=""
+        >Badges</a>
+        <a role="tab"
            class="tab tab-active"
            @click=""
         >Stories</a>
         <a role="tab"
            class="tab"
            @click=""
-        >Badges</a>
+        >Characters</a>
       </div>
-      <div ref="storiesRef">
+      <div ref="storiesTab">
+        <StoryList :stories="stories"></StoryList>
+      </div>
+      <div ref="charactersTab">
 
       </div>
-      <div ref="badgesRef">
+      <div ref="badgesTab">
 
       </div>
     </div>

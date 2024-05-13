@@ -26,3 +26,21 @@ export function useCollectionSnapshotListener(query, listRef) {
 
     return unsubscribe;
 }
+
+export function useDocumentSnapshotListener(docRef, targetRef) {
+
+    const unsubscribe = onSnapshot(docRef, snapshot => {
+            if (snapshot.exists()) {
+                targetRef.value = snapshot.data();
+            }
+        },
+        error => {
+            console.error('Error:', error.code, error.message);
+        });
+
+    onUnmounted(() => {
+        unsubscribe();
+    });
+
+    return unsubscribe;
+}
