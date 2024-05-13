@@ -28,7 +28,7 @@ function logout() {
                role="button">
             <img v-if="store.userSession.profile?.photoURL"
                  tabindex="0" role="button"
-                 :src="store.userSession.profile?.photoURL"
+                 :src="store.userSession.profile.photoURL"
                  alt="Profile"
                  class="rounded-full">
             <i v-else class="fa-regular fa-user m-auto"></i>

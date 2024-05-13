@@ -1,7 +1,8 @@
 <script setup>
 import StoryList from "../components/StoryList.vue";
 import CreateStoryModal from "../components/CreateStoryModal.vue";
-import {db} from "../js/firebase.js";
+
+import {auth, db} from "../js/firebase.js";
 import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {onMounted, ref} from "vue";
 import {storyConverter} from "../models/Story.js";
@@ -16,7 +17,24 @@ const userStories = ref([]);
 const collectionRef = collection(db, 'stories').withConverter(storyConverter);
 
 useCollectionSnapshotListener(query(collectionRef), stories);
-useCollectionSnapshotListener(query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? '')), userStories);
+
+
+// auth.authStateReady()
+//     .then(() => {
+//       console.log('Hello')
+//       console.log(auth.currentUser);
+//       useCollectionSnapshotListener(query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? '')), userStories);
+//     })
+//     .catch(error => {
+//       console.log('Error: ', error.code, error.message);
+//     });
+
+
+onMounted(async () => {
+  await auth.authStateReady();
+  useCollectionSnapshotListener(query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? '')), userStories);
+});
+
 
 function createStory(story) {
   let uid = story.title.split(' ').join('-');
@@ -48,15 +66,15 @@ function createStory(story) {
       <!--      // Placeholder-->
       <h1>Explore</h1>
       <StoryList :stories="stories"></StoryList>
-<!--      <div class="my-2 bg-neutral card-body">-->
-<!--        <h1>inspiration placeholder</h1>-->
-<!--      </div>-->
-<!--      <div class="my-2 bg-neutral card-body">-->
-<!--        <h1>inspiration placeholder</h1>-->
-<!--      </div>-->
-<!--      <div class="my-2 bg-neutral card-body">-->
-<!--        <h1>inspiration placeholder</h1>-->
-<!--      </div>-->
+      <!--      <div class="my-2 bg-neutral card-body">-->
+      <!--        <h1>inspiration placeholder</h1>-->
+      <!--      </div>-->
+      <!--      <div class="my-2 bg-neutral card-body">-->
+      <!--        <h1>inspiration placeholder</h1>-->
+      <!--      </div>-->
+      <!--      <div class="my-2 bg-neutral card-body">-->
+      <!--        <h1>inspiration placeholder</h1>-->
+      <!--      </div>-->
     </div>
   </div>
 </template>

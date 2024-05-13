@@ -1,17 +1,18 @@
 import {onSnapshot} from "firebase/firestore";
-import {onUnmounted} from "vue";
+import {onUnmounted, unref} from "vue";
 
 
 export function useCollectionSnapshotListener(query, listRef) {
+    const list = unref(listRef);
     const unsubscribe = onSnapshot(
         query,
         snapshot => {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {
-                    listRef.value.push(change.doc.data());
+                    list.push(change.doc.data());
                 } else if (change.type === 'removed') {
                     let char = change.doc.data();
-                    listRef.value.splice(listRef.value.indexOf(char), 1);
+                    list.splice(list.indexOf(char), 1);
                 }
             });
         },
@@ -28,7 +29,6 @@ export function useCollectionSnapshotListener(query, listRef) {
 }
 
 export function useDocumentSnapshotListener(docRef, targetRef) {
-
     const unsubscribe = onSnapshot(docRef, snapshot => {
             if (snapshot.exists()) {
                 targetRef.value = snapshot.data();
