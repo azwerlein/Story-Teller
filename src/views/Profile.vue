@@ -26,13 +26,10 @@ const stories = ref([]);
 const storyQuery = query(collection(db, 'stories').withConverter(storyConverter), where('authorId', '==', props.id));
 useCollectionSnapshotListener(storyQuery, stories);
 
-const storiesTab = ref(null);
-const badgesTab = ref(null);
-
-
 </script>
 
 <template>
+  <h2 class="text-6xl text-center my-8">Profile</h2>
   <div class="w-9/12 m-auto p-4">
     <button class="btn btn-neutral" @click="router.go(-1)"><</button>
     <div v-if="profile" class="m-auto content-ce">
@@ -62,27 +59,19 @@ const badgesTab = ref(null);
         <button class="btn">Follow</button>
       </div>
       <div>
-        <div role="tablist" class="tabs tabs-boxed">
-          <a role="tab"
-             class="tab"
-             @click=""
-          >Badges</a>
-          <a role="tab"
-             class="tab tab-active"
-             @click=""
-          >Stories</a>
-          <a role="tab"
-             class="tab"
-             @click=""
-          >Characters</a>
-        </div>
-        <div ref="storiesTab">
-          <StoryList :stories="stories"></StoryList>
-        </div>
-        <div ref="charactersTab">
-
-        </div>
-        <div ref="badgesTab">
+        <div role="tablist" class="tabs tabs-boxed tabs-lg">
+          <input type="radio" name="profile_tabs" role="tab" class="tab" aria-label="Badges">
+          <div role="tabpanel" class="tab-content p-10">
+            Badges
+          </div>
+          <input type="radio" name="profile_tabs" role="tab" class="tab" aria-label="Stories" checked>
+          <div role="tabpanel" class="tab-content p-10">
+            <StoryList :stories="stories"></StoryList>
+          </div>
+          <input type="radio" name="profile_tabs" role="tab" class="tab" aria-label="Characters">
+          <div role="tabpanel" class="tab-content p-10">
+            Characters
+          </div>
 
         </div>
       </div>

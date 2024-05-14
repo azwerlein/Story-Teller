@@ -81,9 +81,9 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
                          id="avatarInput"
                          @save-image="updatePicture"></ImagePreviewInput>
 
-      <div class="flex justify-end">
-        <button class="btn btn-success" @click="updateProfile">Save</button>
-        <button class="btn btn-neutral" @click="getProfile">Cancel</button>
+      <div class="flex justify-around">
+        <button class="btn btn-neutral min-w-20" @click="getProfile">Cancel</button>
+        <button class="btn btn-primary min-w-20" @click="updateProfile">Save</button>
       </div>
     </div>
     <div v-else>

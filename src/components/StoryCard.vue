@@ -14,8 +14,8 @@ defineProps({
   <RouterLink :to="{name: 'storyeditor', params: {storyId: story.uid}}">
     <div class="card bg-neutral text-neutral-content border-4 border-neutral my-4">
       <div class="card-body">
-        <h2>{{ story.title }}</h2>
-        <h3>{{ story.author }}</h3>
+        <h3>{{ story.title }}</h3>
+        <h4>{{ story.author }}</h4>
       </div>
     </div>
   </RouterLink>

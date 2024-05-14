@@ -10,6 +10,11 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['updateDescription']);
+
+// const name = ref(props.section.name);
+// const description = ref(props.section.description);
+
 const heading = ref(null);
 const content = ref(null);
 
@@ -19,27 +24,42 @@ function enterEditMode() {
   editMode.value = true;
 }
 
-const isEmpty = computed(() => heading.value.innerHTML === '');
+function cancelChanges() {
+  editMode.value = false;
+  heading.value.textContent = props.section.name;
+  content.value.textContent = props.section.description;
+}
+
+function saveChanges() {
+  editMode.value = false;
+  props.section.name = heading.value.textContent;
+  props.section.description = content.value.textContent;
+  emit('updateDescription', props.section);
+}
 
 </script>
 
 <template>
-  <section class="border-2 border-neutral-content p-4">
+  <section class="p-4">
     <div class="flex justify-between">
-      <div v-bind:class="{headingPlaceholder: (editMode && isEmpty)}"
+      <div v-bind:class="{headingPlaceholder: editMode}"
            v-bind:contenteditable="editMode"
-           class="text-xl border-b-2 border-neutral min-h-8 w-full"
+           class="text-2xl font-semibold border-b-2 border-primary min-h-8 w-full"
            ref="heading"
       >{{ section.name }}</div>
       <div class="me-5" @click="enterEditMode">
         <i class="fa-solid fa-pencil fa-lg"></i>
       </div>
     </div>
-    <div v-bind:class="{contentPlaceholder: (editMode && isEmpty)}"
+    <div v-bind:class="{contentPlaceholder: editMode}"
          v-bind:contenteditable="editMode"
-         ref="content"
          class="min-h-8"
+         ref="content"
     >{{ section.description }}</div>
+    <div v-if="editMode">
+              <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>
+              <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>
+    </div>
   </section>
 </template>
 

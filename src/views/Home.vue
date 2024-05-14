@@ -49,22 +49,24 @@ function createStory(story) {
 </script>
 
 <template>
-  <div class="grid grid-cols-5">
-    <div class="col-start-1 bg-base-200 p-4">
-      <h2 class="text-xl">Your Stories</h2>
-      <CreateStoryModal v-if="store.userSession"
-                        :user-session="store.userSession"
-                        @create-story="createStory"
-      ></CreateStoryModal>
+  <h1 class="text-6xl text-center my-8">Story Teller</h1>
+  <div class="flex flex-auto w-10/12 m-auto">
+    <div class="w-full p-8">
+      <div class="flex justify-between items-center">
+        <h2>Your Stories</h2>
+        <CreateStoryModal v-if="store.userSession"
+                          :user-session="store.userSession"
+                          @create-story="createStory"
+        ></CreateStoryModal>
+      </div>
       <StoryList :stories="userStories"></StoryList>
     </div>
-    <div class="col-start-2 col-span-3 border-x-2 border-neutral p-4">
-      <h2 class="text-xl">Feed</h2>
-      <StoryList :stories="stories"></StoryList>
-    </div>
-    <div class="col-start-5 bg-base-200 p-4">
-      <!--      // Placeholder-->
-      <h1>Explore</h1>
+    <!--    <div class="border-x-2 border-neutral p-4">-->
+    <!--      <h2>Feed</h2>-->
+    <!--      <StoryList :stories="stories"></StoryList>-->
+    <!--    </div>-->
+    <div class="w-full p-8">
+      <h2>Explore</h2>
       <StoryList :stories="stories"></StoryList>
     </div>
   </div>

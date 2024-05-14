@@ -43,36 +43,35 @@ function addNewSection() {
   sections.value.push(new CharacterDescription());
 }
 
+function updateDescription(description) {
+  updateDoc(descriptionDocRef, {
+    [description.name]: description.description,
+  }).catch(error => {
+    console.error('Error: ', error.code, error.message);
+  });
+}
+
 const editMode = ref(false);
-const backupSections = ref([]);
+// const backupSections = ref([]);
 
-function enterEditMode() {
-  editMode.value = true;
-  backupSections.value = [];
-  sections.value.forEach(desc => backupSections.value.push(desc));
-}
-
-function cancelChanges() {
-  editMode.value = false;
-  sections.value = backupSections.value;
-}
-
-function saveChanges() {
-  editMode.value = false;
-}
+// function enterEditMode() {
+//   editMode.value = true;
+//   backupSections.value = [];
+//   sections.value.forEach(desc => backupSections.value.push(desc));
+// }
 
 </script>
 
 <template>
   <div class="w-11/12 m-auto p-8">
     <div class="flex justify-end w-full">
-      <div v-if="editMode">
-        <!--        <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>-->
-        <!--        <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>-->
-      </div>
-      <div v-else>
-        <!--        <button class="btn btn-neutral" @click="enterEditMode">Edit page</button>-->
-      </div>
+      <!--      <div v-if="editMode">-->
+      <!--        &lt;!&ndash;        <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>&ndash;&gt;-->
+      <!--        &lt;!&ndash;        <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>&ndash;&gt;-->
+      <!--      </div>-->
+      <!--      <div v-else>-->
+      <!--        &lt;!&ndash;        <button class="btn btn-neutral" @click="enterEditMode">Edit page</button>&ndash;&gt;-->
+      <!--      </div>-->
     </div>
     <h1 v-if="character">{{ character.name }}</h1>
     <div id="content" class="overflow-y-auto">
@@ -87,8 +86,9 @@ function saveChanges() {
                         :key="section.name"
                         :section="section"
                         :edit-mode="editMode"
+                        @update-description="updateDescription"
       ></CharacterSection>
-      <button class="btn" @click="addNewSection">Add Section</button>
+      <button class="btn btn-primary" @click="addNewSection">Add Section</button>
     </div>
 
     <CommentSection :original-post-id="characterId"

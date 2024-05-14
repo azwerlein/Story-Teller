@@ -27,7 +27,7 @@ function closeModal() {
 </script>
 
 <template>
-  <button v-if="buttonText" class="btn" v-on:click="showModal">{{ buttonText }}</button>
+  <button v-if="buttonText" class="btn btn-primary my-4" v-on:click="showModal">{{ buttonText }}</button>
   <dialog ref="modal" class="modal">
     <div class="modal-box">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" v-on:click="closeModal">✕</button>

@@ -13,16 +13,15 @@ function logout() {
 </script>
 
 <template>
-  <header class="bg-primary flex justify-between p-4 border-b-2 border-neutral">
-    <h1>
+  <header class="bg-primary flex justify-end gap-x-20 p-4 border-b-2 border-neutral">
+    <h2>
       <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
-    </h1>
+    </h2>
     <h2>
       <RouterLink :to="{name: 'community'}">Community</RouterLink>
     </h2>
     <div v-if="store.userSession?.profile">
       <div class="flex-auto flex justify-end">
-        <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
           <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16 bg-base-100" tabindex="0"
                role="button">

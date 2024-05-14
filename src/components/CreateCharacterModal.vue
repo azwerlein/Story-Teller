@@ -39,11 +39,11 @@ function validateFields() {
     <template #default>
       <h3 class="font-bold text-lg">New Character</h3>
       <label for="nameInput" class="label">Name: </label>
-      <input id="nameInput" ref="nameInput" class="input input-bordered" type="text" v-model.trim="character.name">
+      <input id="nameInput" ref="nameInput" class="input input-bordered w-full" type="text" v-model.trim="character.name">
       <p class="invalid-message">The name must not be blank.</p>
     </template>
     <template #action="{ closeModal }">
-      <button class="btn" v-on:click="createCharacter">Create</button>
+      <button class="btn btn-primary" v-on:click="createCharacter">Create</button>
       <button class="btn" v-on:click="closeModal">Cancel</button>
     </template>
   </Modal>
