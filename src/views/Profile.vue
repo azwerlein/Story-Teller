@@ -3,7 +3,7 @@ import {db} from "../js/firebase.js";
 import {collection, doc, getDoc, query, where} from "firebase/firestore";
 import {profileConverter, UserSession} from "../models/User.js";
 import {ref} from "vue";
-import CommentSection from "../components/CommentSection.vue";
+import CommentSection from "../components/comments/CommentSection.vue";
 import {useSessionStore} from "../js/store.js";
 import StoryList from "../components/StoryList.vue";
 import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";

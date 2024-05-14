@@ -1,7 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
-import CommentSection from "../components/CommentSection.vue";
+import CommentSection from "../components/comments/CommentSection.vue";
 import CharacterSection from "../components/CharacterSection.vue";
 import {characterConverter, CharacterDescription, characterDescriptionConverter} from "../models/Character.js";
 import {collection, doc, onSnapshot, setDoc} from "firebase/firestore";
@@ -93,7 +93,9 @@ function saveChanges() {
       </div>
     </div>
 
-    <CommentSection></CommentSection>
+    <CommentSection :original-post-id="characterId"
+                    type="character"
+    ></CommentSection>
   </div>
 
 </template>

@@ -1,7 +1,9 @@
 <script setup>
+import CommentPost from "../../models/CommentPost.js";
+
 const props = defineProps({
   comment: {
-    type: Object,
+    type: CommentPost,
     required: true,
   },
 });
@@ -11,7 +13,7 @@ const props = defineProps({
   <div class="py-2 border-y-2 border-neutral">
     <div class="card-body">
       <h4>{{ props.comment.author }}</h4>
-      <p>{{ props.comment.content }}</p>
+      <div>{{ props.comment.content }}</div>
     </div>
   </div>
 </template>
