@@ -28,10 +28,10 @@ export function useCollectionSnapshotListener(query, listRef) {
     return unsubscribe;
 }
 
-export function useDocumentSnapshotListener(docRef, targetRef) {
+export function useDocumentSnapshotListener(docRef, setter) {
     const unsubscribe = onSnapshot(docRef, snapshot => {
             if (snapshot.exists()) {
-                targetRef.value = snapshot.data();
+                setter(snapshot.data());
             }
         },
         error => {

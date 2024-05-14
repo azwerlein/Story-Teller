@@ -17,6 +17,7 @@ function login() {
 </script>
 
 <template>
+  <h2 class="text-6xl text-center my-8">Sign in</h2>
   <div class="w-64 md:w-1/3 p-4 m-auto">
     <label class="label" for="emailInput">Email</label>
     <input class="form-control w-full p-2 rounded-md" type="text" id="emailInput" required>

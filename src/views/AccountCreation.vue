@@ -1,12 +1,12 @@
 <script>
-import {createUserWithEmailAndPassword} from "firebase/auth";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {doc, setDoc} from 'firebase/firestore';
 import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 
 import {router} from "../js/router.js";
 import {auth, db, storage} from "../js/firebase.js";
 
-import {Profile} from '../models/User.js';
+import {Profile, profileConverter} from '../models/User.js';
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 
 export default {
@@ -44,14 +44,11 @@ export default {
           })
           .then(url => {
             this.user.photoURL = url;
-            const docRef = doc(db, 'users', uid);
-            setDoc(docRef, this.user)
-                .catch(error => {
-                  console.log('Error: ', error.code, error.data);
-                });
+            const docRef = doc(db, 'users', uid).withConverter(profileConverter);
+            setDoc(docRef, this.user);
           })
           .catch(error => {
-            console.log('Error: ', error);
+            console.error('Error: ', error.code, error.message);
           });
     },
     updatePicture(blob) {
@@ -62,7 +59,8 @@ export default {
 </script>
 
 <template>
-  <div class="w-64 content-center m-auto">
+  <h2 class="text-6xl text-center my-8">Create an account</h2>
+  <div class="w-64 md:w-1/3 content-center m-auto">
     <form v-on:submit.prevent="createAccount">
       <label class="label" for="emailInput">Email</label>
       <input class="form-control w-full p-2 rounded-md"
@@ -87,7 +85,10 @@ export default {
           label="Avatar: "
           @save-image="updatePicture"
       ></ImagePreviewInput>
-      <button class="btn btn-primary" type="submit">Create Account</button>
+      <div class="flex flex-col content-center">
+        <button class="btn btn-primary mt-8" type="submit">Create account</button>
+        <RouterLink class="link text-center mt-4" :to="{name: 'register'}">Create an account</RouterLink>
+      </div>
     </form>
   </div>
 </template>

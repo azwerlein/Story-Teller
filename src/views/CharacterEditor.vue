@@ -17,11 +17,11 @@ const props = defineProps({
 
 const character = ref(null);
 const characterDocRef = doc(collection(db, 'characters'), props.characterId).withConverter(characterConverter);
-useDocumentSnapshotListener(characterDocRef, character);
+useDocumentSnapshotListener(characterDocRef, char => character.value = char);
 
 const sections = ref([]);
 const descriptionDocRef = doc(db, 'characterDescriptions', props.characterId).withConverter(characterDescriptionListConverter);
-useDocumentSnapshotListener(descriptionDocRef, sections);
+useDocumentSnapshotListener(descriptionDocRef, desc => sections.value = desc);
 
 // if (sections.value.length === 0) {
 //   sections.value.push(new CharacterDescription(

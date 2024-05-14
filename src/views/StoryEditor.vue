@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 const story = ref(null);
-useDocumentSnapshotListener(doc(db, 'stories', props.storyId), story);
+useDocumentSnapshotListener(doc(db, 'stories', props.storyId), data => story.value = data);
 
 const characters = ref([]);
 const characterCollection = collection(db, 'characters').withConverter(characterConverter);

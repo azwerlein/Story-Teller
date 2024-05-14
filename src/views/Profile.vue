@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 const profile = ref(null);
-useDocumentSnapshotListener(doc(db, 'users', props.id).withConverter(profileConverter), profile);
+useDocumentSnapshotListener(doc(db, 'users', props.id).withConverter(profileConverter), user => profile.value = user);
 
 const stories = ref([]);
 const storyQuery = query(collection(db, 'stories').withConverter(storyConverter), where('authorId', '==', props.id));

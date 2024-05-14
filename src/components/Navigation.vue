@@ -63,7 +63,7 @@ function logout() {
       </div>
     </div>
     <div v-else>
-      <RouterLink :to="{name: 'login'}" class="btn">Login</RouterLink>
+      <RouterLink :to="{name: 'login'}" class="btn btn-neutral">Login</RouterLink>
     </div>
   </header>
 </template>
