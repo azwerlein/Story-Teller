@@ -44,9 +44,7 @@ getProfile();
 
 // Updates the profile
 function updateProfile() {
-  console.log('ok')
   if (picture.value) {
-    console.log('ok')
     uploadPicture(props.id, profile)
         .then(() => {
           setDoc(docRef, profile.value);
@@ -55,7 +53,6 @@ function updateProfile() {
           console.log('Error: ', error.code, error.message);
         });
   } else {
-    console.log('okay')
     setDoc(docRef, profile.value)
         .catch(error => {
           console.log('Error: ', error.code, error.message);
@@ -68,14 +65,18 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
 </script>
 
 <template>
-  <div>
-    <div v-if="store.userSession?.user.uid === id && profile">
+  <div class="flex justify-center p-8">
+    <div v-if="store.userSession?.user.uid === id && profile"
+         class="w-64 m-auto">
       <label class="label" for="nameInput">Display Name</label>
       <input class="form-control w-full"
              type="text"
              id="nameInput"
              required
              v-model="profile.displayName">
+      <label class="label" for="bioInput">Bio</label>
+      <textarea class="form-control w-full" v-model="profile.bio"></textarea>
+
       <ImagePreviewInput label="Profile picture: "
                          id="avatarInput"
                          @save-image="updatePicture"></ImagePreviewInput>

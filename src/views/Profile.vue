@@ -52,7 +52,7 @@ const badgesTab = ref(null);
         </div>
         <div class="p-8">
           <h2>About</h2>
-          <p>Hello! blablalba</p>
+          <p>{{ profile.bio }}</p>
         </div>
       </div>
       <div v-if="store.userSession?.user.uid === id" class="flex justify-center">
@@ -60,10 +60,6 @@ const badgesTab = ref(null);
       </div>
       <div v-else class="flex justify-center">
         <button class="btn">Follow</button>
-      </div>
-      <div class="p-8">
-        <h2></h2>
-        <p> {{ profile.bio }}</p>
       </div>
       <div>
         <div role="tablist" class="tabs tabs-boxed">
@@ -90,7 +86,10 @@ const badgesTab = ref(null);
 
         </div>
       </div>
-      <CommentSection></CommentSection>
+      <CommentSection
+          :original-post-id="id"
+          type="profile"
+      ></CommentSection>
     </div>
     <div v-else class="flex justify-center">
       <h1 class="text-3xl">That profile doesn't exist.</h1>

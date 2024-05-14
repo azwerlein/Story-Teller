@@ -24,7 +24,7 @@ function logout() {
       <div class="flex-auto flex justify-end">
         <button class="btn">Notifications</button>
         <div class="dropdown dropdown-end">
-          <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16" tabindex="0"
+          <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16 bg-base-100" tabindex="0"
                role="button">
             <img v-if="store.userSession.profile?.photoURL"
                  tabindex="0" role="button"
