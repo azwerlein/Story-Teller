@@ -10,10 +10,10 @@ store.init();
 <template>
   <Navigation></Navigation>
   <main class="bg-base-100">
-    <RouterView></RouterView>
+    <RouterView class="min-h-[60vh]"></RouterView>
   </main>
 
-  <footer class="flex justify-center w-full p-20 bg-neutral/50 border-t-2 border-neutral">
+  <footer class="flex justify-center w-4/5 p-5 border-t-2 border-neutral m-auto">
     <p>&copy; 2024 Cactus corp.</p>
   </footer>
 

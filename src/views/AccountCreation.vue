@@ -65,19 +65,19 @@ export default {
   <div class="w-64 content-center m-auto">
     <form v-on:submit.prevent="createAccount">
       <label class="label" for="emailInput">Email</label>
-      <input class="form-control w-full"
+      <input class="form-control w-full p-2 rounded-md"
              type="email"
              id="emailInput"
              required
              v-model="account.email">
       <label class="label" for="passwordInput">Password</label>
-      <input class="form-control w-full"
-             type="text"
+      <input class="form-control w-full p-2 rounded-md"
+             type="password"
              id="passwordInput"
              required
              v-model="account.password">
       <label class="label" for="nameInput">Display Name</label>
-      <input class="form-control w-full"
+      <input class="form-control w-full p-2 rounded-md"
              type="text"
              id="nameInput"
              required
@@ -87,7 +87,7 @@ export default {
           label="Avatar: "
           @save-image="updatePicture"
       ></ImagePreviewInput>
-      <button class="btn" type="submit">Create Account</button>
+      <button class="btn btn-primary" type="submit">Create Account</button>
     </form>
   </div>
 </template>

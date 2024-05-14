@@ -69,21 +69,21 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
     <div v-if="store.userSession?.user.uid === id && profile"
          class="w-64 m-auto">
       <label class="label" for="nameInput">Display Name</label>
-      <input class="form-control w-full"
+      <input class="form-control w-full p-4 rounded-md"
              type="text"
              id="nameInput"
              required
              v-model="profile.displayName">
       <label class="label" for="bioInput">Bio</label>
-      <textarea class="form-control w-full" v-model="profile.bio"></textarea>
+      <textarea class="form-control w-full p-4 rounded-md" v-model="profile.bio"></textarea>
 
       <ImagePreviewInput label="Profile picture: "
                          id="avatarInput"
                          @save-image="updatePicture"></ImagePreviewInput>
 
-      <div class="flex justify-around">
-        <button class="btn btn-neutral min-w-20" @click="getProfile">Cancel</button>
+      <div class="flex flex-col md:flex-row gap-4 my-4 justify-around">
         <button class="btn btn-primary min-w-20" @click="updateProfile">Save</button>
+        <button class="btn btn-neutral min-w-20" @click="getProfile">Cancel</button>
       </div>
     </div>
     <div v-else>

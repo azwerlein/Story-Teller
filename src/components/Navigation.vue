@@ -13,17 +13,37 @@ function logout() {
 </script>
 
 <template>
-  <header class="bg-primary flex justify-end gap-x-20 p-4 border-b-2 border-neutral">
-    <h2>
+  <header
+      class="bg-primary flex justify-between md:justify-end content-center items-center gap-x-20 p-4 border-b-2 border-neutral sm:gap-x-10">
+    <div class="dropdown block md:hidden">
+      <i class="fa-solid fa-bars text-[2em]"
+         role="button"
+         tabIndex="1"
+      ></i>
+      <ul tabindex="1"
+          class="dropdown-content z-[1] menu shadow bg-neutral border-4 border-slate-400 rounded-box p-2 w-40">
+        <li>
+          <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
+        </li>
+        <li>
+          <RouterLink :to="{name: 'community'}">Community</RouterLink>
+        </li>
+      </ul>
+    </div>
+
+    <h2 class="hidden md:inline-block">
       <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
     </h2>
-    <h2>
+    <h2 class="hidden md:inline-block">
       <RouterLink :to="{name: 'community'}">Community</RouterLink>
     </h2>
+
     <div v-if="store.userSession?.profile">
       <div class="flex-auto flex justify-end">
         <div class="dropdown dropdown-end">
-          <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16 bg-base-100" tabindex="0"
+          <div class="flex justify-center rounded-full border-4 border-neutral-content w-16 h-16 bg-base-100
+          transition-all ease-out duration-300 active:scale-110"
+               tabindex="0"
                role="button">
             <img v-if="store.userSession.profile?.photoURL"
                  tabindex="0" role="button"
@@ -37,7 +57,6 @@ function logout() {
             <li>
               <RouterLink :to="{name: 'profile', params: {id: store.userSession.user.uid}}">Profile</RouterLink>
             </li>
-            <li><a>Settings</a></li>
             <li><a v-on:click="logout">Logout</a></li>
           </ul>
         </div>

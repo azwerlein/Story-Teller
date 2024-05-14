@@ -115,7 +115,7 @@ function resetCanvas() {
     <template #default>
       <h3>Image Editor</h3>
       <canvas ref="canvasElement"
-              class="w-128 h-64"
+              class="w-128 h-64 cursor-grab active:cursor-grabbing"
               v-on:mousedown="isDragging = true"
               v-on:mouseup="isDragging = false"
               v-on:mouseout="isDragging = false"

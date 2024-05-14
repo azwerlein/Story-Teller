@@ -50,7 +50,7 @@ function createStory(story) {
 
 <template>
   <h1 class="text-6xl text-center my-8">Story Teller</h1>
-  <div class="flex flex-auto w-10/12 m-auto">
+  <div class="flex flex-auto flex-col md:flex-row w-10/12 m-auto">
     <div class="w-full p-8">
       <div class="flex justify-between items-center">
         <h2>Your Stories</h2>

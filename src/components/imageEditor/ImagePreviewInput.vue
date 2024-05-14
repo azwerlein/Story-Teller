@@ -61,7 +61,7 @@ function updatePicture(blob) {
   <input class="form-control w-full"
          type="file"
          :id="id"
-         alt="Profile Picture"
+         alt="Picture Input"
          accept="image/png, image/jpeg, image/jpg"
          v-on:change="editPicture"/>
   <img ref="preview" src="" alt="Profile Picture Preview">

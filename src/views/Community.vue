@@ -31,7 +31,7 @@ useCollectionSnapshotListener(q, users);
 
 <template>
   <h2 class="text-6xl text-center my-8">Users</h2>
-  <UserList class="grid grid-cols-3 gap-4"
+  <UserList class="md:grid grid-cols-3 gap-4"
             :users="users"></UserList>
 </template>
 

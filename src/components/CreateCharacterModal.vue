@@ -34,6 +34,7 @@ function validateFields() {
 
 </script>
 
+
 <template>
   <Modal ref="modal" button-text="Create Character">
     <template #default>
