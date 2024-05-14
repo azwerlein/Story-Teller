@@ -8,41 +8,49 @@ const props = defineProps({
     type: CharacterDescription,
     required: true,
   },
-  // editMode: {
-  //   type: Boolean,
-  //   default: false,
-  // },
 });
+
+const heading = ref(null);
+const content = ref(null);
 
 const editMode = ref(false);
-
-
-const editorClass = computed(() => {
-  return {
-    'border-4 border-primary': editMode.value,
-  }
-});
 
 function enterEditMode() {
   editMode.value = true;
 }
 
+const isEmpty = computed(() => heading.value.innerHTML === '');
+
 </script>
 
 <template>
-  <section class="">
+  <section class="border-2 border-neutral-content p-4">
     <div class="flex justify-between">
-      <h1 v-bind:class="editorClass" class="text-xl border-b-2 border-neutral">{{ section.name }}</h1>
+      <div v-bind:class="{headingPlaceholder: (editMode && isEmpty)}"
+           v-bind:contenteditable="editMode"
+           class="text-xl border-b-2 border-neutral min-h-8 w-full"
+           ref="heading"
+      >{{ section.name }}</div>
       <div class="me-5" @click="enterEditMode">
         <i class="fa-solid fa-pencil fa-lg"></i>
       </div>
     </div>
-    <div v-bind:class="editorClass" ref="text">
-      {{ section.description }}
-    </div>
+    <div v-bind:class="{contentPlaceholder: (editMode && isEmpty)}"
+         v-bind:contenteditable="editMode"
+         ref="content"
+         class="min-h-8"
+    >{{ section.description }}</div>
   </section>
 </template>
 
-<style scoped>
-
-</style>
+<!--<style scoped>-->
+<!--//.headingPlaceholder::before {-->
+<!--//  content: 'Enter the section heading';-->
+<!--//  @apply text-neutral-content/40;-->
+<!--//}-->
+<!--//-->
+<!--//.contentPlaceholder::before {-->
+<!--//  content: 'Enter the section content';-->
+<!--//  @apply text-neutral-content/40;-->
+<!--//}-->
+<!--</style>-->

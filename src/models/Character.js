@@ -22,15 +22,23 @@ export function CharacterDescription(name, description) {
     this.description = description;
 }
 
-export const characterDescriptionConverter = {
-    toFirestore: description => {
-        return {
-            name: description.name,
-            description: description.description,
-        }
+export const characterDescriptionListConverter = {
+    toFirestore: list => {
+        let pojo = {}
+        list.map(section => {
+            pojo[section.name] = section.description;
+        })
+        console.log(pojo);
+        return pojo;
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new CharacterDescription(data.name, data.description);
+        let list = [];
+        for (let property in data) {
+            console.log(property);
+            console.log(data[property]);
+            list.push(new CharacterDescription(property, data[property]));
+        }
+        return list;
     }
 }
