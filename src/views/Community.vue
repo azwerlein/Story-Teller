@@ -13,7 +13,7 @@ const userQuery = query(collection(db, 'users'), limit(10)).withConverter(profil
 </script>
 
 <template>
-  <div>
+  <div class="md:w-10/12 m-auto">
     <h2 class="text-6xl text-center my-8">Users</h2>
     <Suspense>
       <template #default>

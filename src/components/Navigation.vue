@@ -26,6 +26,9 @@ function logout() {
           <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
         </li>
         <li>
+          <RouterLink :to="{name: 'browse'}">Browse</RouterLink>
+        </li>
+        <li>
           <RouterLink :to="{name: 'community'}">Community</RouterLink>
         </li>
       </ul>
@@ -33,6 +36,9 @@ function logout() {
 
     <h2 class="hidden md:inline-block">
       <RouterLink :to="{name: 'home'}">Story Teller</RouterLink>
+    </h2>
+    <h2 class="hidden md:inline-block">
+      <RouterLink :to="{name: 'browse'}">Browse</RouterLink>
     </h2>
     <h2 class="hidden md:inline-block">
       <RouterLink :to="{name: 'community'}">Community</RouterLink>

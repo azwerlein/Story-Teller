@@ -5,7 +5,6 @@
       <div class="flex flex-col gap-y-4">
         <div class="bg-neutral h-8 w-full rounded-md"></div>
         <div class="bg-neutral h-8 w-full rounded-md"></div>
-        <div class="bg-neutral h-8 w-full rounded-md"></div>
       </div>
     </div>
   </div>

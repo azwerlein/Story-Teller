@@ -3,13 +3,14 @@
 import CharacterList from "../components/CharacterList.vue";
 import CreateCharacterModal from "../components/CreateCharacterModal.vue";
 
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {collection, doc, deleteDoc, query, where, setDoc} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {characterConverter} from "../models/Character.js";
 import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
 import {useSessionStore} from "../js/store.js";
 import {usePictureInput} from "../composables/PictureInput.js";
+import {storyConverter} from "../models/Story.js";
 
 const store = useSessionStore();
 
@@ -21,7 +22,7 @@ const props = defineProps({
 });
 
 const story = ref(null);
-useDocumentSnapshotListener(doc(db, 'stories', props.storyId), data => story.value = data);
+useDocumentSnapshotListener(doc(db, 'stories', props.storyId).withConverter(storyConverter), data => story.value = data);
 
 const characters = ref([]);
 const characterCollection = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
@@ -52,7 +53,12 @@ function deleteCharacter(uid) {
       });
 }
 
-const {picture, updatePicture, uploadPicture} = usePictureInput();
+const {updatePicture, uploadPicture} = usePictureInput();
+
+
+const myStory = computed(() => {
+  return store.userSession?.profile.uid === story.value?.authorId;
+});
 
 </script>
 
@@ -61,7 +67,7 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
     <RouterLink class="btn btn-neutral" :to="{name: 'home'}"><</RouterLink>
     <div v-if="story" class="p-8">
       <h1>{{story.title}}</h1>
-      <CreateCharacterModal @save-image="updatePicture" @create-character="addCharacter"></CreateCharacterModal>
+      <CreateCharacterModal v-if="myStory" @save-image="updatePicture" @create-character="addCharacter"></CreateCharacterModal>
       <CharacterList
           :characters="characters"
           @delete-character="deleteCharacter"

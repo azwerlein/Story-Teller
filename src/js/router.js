@@ -8,9 +8,11 @@ import CharacterEditor from "../views/CharacterEditor.vue";
 
 import {createRouter, createWebHistory} from "vue-router";
 import EditProfile from "../views/EditProfile.vue";
+import Browse from "../views/Browse.vue";
 
 const routes = [
     { path: '/', name: 'home', component: Home, alias: '/home' },
+    { path: '/browse', name: 'browse', component: Browse },
     { path: '/community', name: 'community', component: Community },
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: AccountCreation },
