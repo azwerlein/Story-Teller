@@ -3,7 +3,7 @@
 import ImageEditorModal from "../components/imageEditor/ImageEditorModal.vue";
 
 // To differentiate Vue and Firebase refs, use an alias.
-import {ref as vRef} from "vue";
+import {ref as vRef, unref} from "vue";
 import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {getDownloadURL, uploadBytes} from "firebase/storage";
 import {ref} from "firebase/database";
@@ -13,6 +13,7 @@ import {profileConverter} from "../models/User.js";
 import {useSessionStore} from "../js/store.js";
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 import {usePictureInput} from "../composables/PictureInput.js";
+import {router} from "../js/router.js";
 
 const store = useSessionStore();
 
@@ -39,13 +40,15 @@ function getProfile() {
         console.log('Error: ', error.code, error.message);
       });
 }
-
 getProfile();
 
 // Updates the profile
 function updateProfile() {
   if (picture.value) {
-    uploadPicture(props.id, profile)
+    uploadPicture(props.id, 'avatars')
+        .then(url => {
+          unref(profile).photoURL = url;
+        })
         .then(() => {
           setDoc(docRef, profile.value);
         })
@@ -66,7 +69,7 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
 
 <template>
   <div class="flex justify-center p-8">
-    <div v-if="store.userSession?.user.uid === id && profile"
+    <div v-if="store.userSession?.profile.uid === id && profile"
          class="w-64 m-auto">
       <label class="label" for="nameInput">Display Name</label>
       <input class="form-control w-full p-4 rounded-md"
@@ -82,12 +85,12 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
                          @save-image="updatePicture"></ImagePreviewInput>
 
       <div class="flex flex-col md:flex-row gap-4 my-4 justify-around">
-        <button class="btn btn-primary min-w-20" @click="updateProfile">Save</button>
-        <button class="btn btn-neutral min-w-20" @click="getProfile">Cancel</button>
+        <button class="btn btn-primary min-w-20" @click="updateProfile(); router.push({name: 'profile', params: {id: store.userSession?.profile.uid ?? ''}});">Save</button>
+        <button class="btn btn-neutral min-w-20" @click="router.back()">Cancel</button>
       </div>
     </div>
     <div v-else>
-      Error
+      <h2>Error: You can't edit this profile.</h2>
     </div>
   </div>
 

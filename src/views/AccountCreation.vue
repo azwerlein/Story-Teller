@@ -10,13 +10,13 @@ import {Profile, profileConverter} from '../models/User.js';
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 
 import {ref as vRef} from 'vue'
+import {usePictureInput} from "../composables/PictureInput.js";
 
 const account = vRef({
   email: '',
   password: '',
 });
 const profile = vRef(new Profile());
-const picture = vRef({});
 
 let temporaryUser;
 
@@ -48,11 +48,7 @@ function createProfile(uid) {
   profile.value.internalId = uid;
   let profileId = profile.value.displayName.split(' ').join('-');
   profileId = profileId.toLowerCase();
-  const avatarsRef = ref(storage, 'images/avatars/' + profileId);
-  return uploadBytes(avatarsRef, picture.value)
-      .then(snapshot => {
-        return getDownloadURL(snapshot.ref);
-      })
+  return uploadPicture(profileId, 'avatars')
       .then(url => {
         profile.value.photoURL = url;
         const docRef = doc(db, 'users', profileId).withConverter(profileConverter);
@@ -63,9 +59,7 @@ function createProfile(uid) {
       });
 }
 
-function updatePicture(blob) {
-  picture.value = blob;
-}
+const {picture, updatePicture, uploadPicture} = usePictureInput();
 </script>
 
 <template>

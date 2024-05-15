@@ -7,20 +7,14 @@ export function usePictureInput() {
 
     function updatePicture(blob) {
         picture.value = blob;
-        console.log('update picture')
     }
 
     // Returns a promise after uploading the picture to storage
-    function uploadPicture(uid, profile) {
-        console.log('ok')
-        const avatarsRef = ref(storage, 'avatars/' + uid);
+    function uploadPicture(uid, folderPath) {
+        const avatarsRef = ref(storage, 'images/' + folderPath + '/' + uid);
         return uploadBytes(avatarsRef, unref(picture))
             .then(snapshot => {
-                console.log('ok')
                 return getDownloadURL(snapshot.ref);
-            })
-            .then(url => {
-                unref(profile).photoURL = url;
             })
             .catch(error => {
                 console.log('Error: ', error);

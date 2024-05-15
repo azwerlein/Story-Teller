@@ -3,6 +3,8 @@
 import Modal from "./Modal.vue";
 import {ref} from "vue";
 import Character from "../models/Character.js";
+import ImagePreviewInput from "./imageEditor/ImagePreviewInput.vue";
+import {usePictureInput} from "../composables/PictureInput.js";
 
 const modal = ref(null);
 const nameInput = ref(null);
@@ -32,6 +34,7 @@ function validateFields() {
   return valid;
 }
 
+const {picture, updatePicture, uploadPicture} = usePictureInput();
 </script>
 
 
@@ -42,6 +45,10 @@ function validateFields() {
       <label for="nameInput" class="label">Name: </label>
       <input id="nameInput" ref="nameInput" class="input input-bordered w-full" type="text" v-model.trim="character.name">
       <p class="invalid-message">The name must not be blank.</p>
+      <ImagePreviewInput label="Portrait: "
+                         id="portrait"
+                         @save-image="updatePicture"
+      ></ImagePreviewInput>
     </template>
     <template #action="{ closeModal }">
       <button class="btn btn-primary" v-on:click="createCharacter">Create</button>

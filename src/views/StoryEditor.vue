@@ -20,13 +20,14 @@ const story = ref(null);
 useDocumentSnapshotListener(doc(db, 'stories', props.storyId), data => story.value = data);
 
 const characters = ref([]);
-const characterCollection = collection(db, 'characters').withConverter(characterConverter);
-const characterQuery = query(characterCollection, where('storyId', '==', props.storyId));
+const characterCollection = collection(db, 'stories', props.storyId, 'characters').withConverter(characterConverter);
+const characterQuery = query(characterCollection);
 useCollectionSnapshotListener(characterQuery, characters);
 
 
 function addCharacter(character) {
   character.storyId = props.storyId;
+
   addDoc(characterCollection, character)
       .catch(error => {
         console.error('Error: ', error.code, error.message);

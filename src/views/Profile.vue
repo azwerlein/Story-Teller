@@ -1,6 +1,6 @@
 <script setup>
 import {db} from "../js/firebase.js";
-import {collection, doc, getDoc, query, where} from "firebase/firestore";
+import {collection, collectionGroup, doc, getDoc, getDocs, query, where} from "firebase/firestore";
 import {profileConverter, UserSession} from "../models/User.js";
 import {ref} from "vue";
 import CommentSection from "../components/comments/CommentSection.vue";
@@ -25,6 +25,18 @@ useDocumentSnapshotListener(doc(db, 'users', props.id).withConverter(profileConv
 const stories = ref([]);
 const storyQuery = query(collection(db, 'stories').withConverter(storyConverter), where('authorId', '==', props.id));
 useCollectionSnapshotListener(storyQuery, stories);
+
+const characters = ref([]);
+const characterQuery = query(collectionGroup(db, 'characters'), where('authorId', '==', props.id));
+getDocs(characterQuery)
+    .then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        characters.value.push(doc.data());
+      })
+    })
+    .catch(error => {
+      console.error('Error: ', error.code, error.message);
+    });
 
 </script>
 
@@ -53,7 +65,7 @@ useCollectionSnapshotListener(storyQuery, stories);
             <p>{{ profile.bio }}</p>
           </div>
         </div>
-        <div v-if="store.userSession?.user.uid === id" class="flex justify-center">
+        <div v-if="store.userSession?.profile.uid === id" class="flex justify-center">
           <RouterLink class="btn" :to="{name: 'editprofile', params: {id: id}}">Edit Profile</RouterLink>
         </div>
         <div v-else class="flex justify-center">

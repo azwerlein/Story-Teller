@@ -55,7 +55,7 @@ function logout() {
           <ul tabindex="0"
               class="dropdown-content z-[1] menu shadow bg-neutral border-4 border-slate-400 rounded-box p-2 w-40">
             <li>
-              <RouterLink :to="{name: 'profile', params: {id: store.userSession.user.uid}}">Profile</RouterLink>
+              <RouterLink :to="{name: 'profile', params: {id: store.userSession?.profile.uid ?? ''}}">Profile</RouterLink>
             </li>
             <li><a v-on:click="logout">Logout</a></li>
           </ul>

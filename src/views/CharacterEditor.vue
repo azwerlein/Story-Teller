@@ -7,6 +7,7 @@ import {characterConverter, CharacterDescription, characterDescriptionListConver
 import {collection, doc, onSnapshot, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
+import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 
 const props = defineProps({
   characterId: {
@@ -51,7 +52,7 @@ function updateDescription(description) {
   });
 }
 
-const editMode = ref(false);
+const imageEditMode = ref(false);
 // const backupSections = ref([]);
 
 // function enterEditMode() {
@@ -74,19 +75,21 @@ const editMode = ref(false);
       <!--      </div>-->
     </div>
     <h1 v-if="character">{{ character.name }}</h1>
-    <div id="content" class="overflow-y-auto">
-      <div class="float-right text-gray-900 bg-neutral rounded-md p-8">
+    <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
+      <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
         <div class="max-w-64">
-          <img
-              src="../assets/XC2-Morag-Artwork.png"
-              alt="Character Portrait">
+          <ImagePreviewInput v-if="imageEditMode"
+                             label="Character Image"></ImagePreviewInput>
+          <img v-else
+               src="../assets/XC2-Morag-Artwork.png"
+               alt="Character Portrait">
         </div>
       </div>
       <CharacterSection v-for="section in sections"
                         :key="section.name"
                         :section="section"
-                        :edit-mode="editMode"
                         @update-description="updateDescription"
+                        class="col-span-2 col-start-1"
       ></CharacterSection>
       <button class="btn btn-primary" @click="addNewSection">Add Section</button>
     </div>
