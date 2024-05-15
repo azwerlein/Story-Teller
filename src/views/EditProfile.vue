@@ -65,6 +65,10 @@ function updateProfile() {
 
 const {picture, updatePicture, uploadPicture} = usePictureInput();
 
+function goToProfile() {
+  router.push({name: 'profile', params: {id: store.userSession?.profile.uid ?? ''}});
+}
+
 </script>
 
 <template>
@@ -85,8 +89,8 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
                          @save-image="updatePicture"></ImagePreviewInput>
 
       <div class="flex flex-col md:flex-row gap-4 my-4 justify-around">
-        <button class="btn btn-primary min-w-20" @click="updateProfile(); router.push({name: 'profile', params: {id: store.userSession?.profile.uid ?? ''}});">Save</button>
-        <button class="btn btn-neutral min-w-20" @click="router.back()">Cancel</button>
+        <button class="btn btn-primary min-w-20" @click="updateProfile(); goToProfile();">Save</button>
+        <button class="btn btn-neutral min-w-20" @click="goToProfile();">Cancel</button>
       </div>
     </div>
     <div v-else>

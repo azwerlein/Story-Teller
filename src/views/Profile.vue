@@ -55,8 +55,8 @@ getDocs(characterQuery)
                 <h2 class="m-auto">3</h2>
               </div>
             </div>
-            <progress class="progress my-4 h-8" :value="0" max="100">
-              {{ profile.xp }}/100
+            <h3 class="content-center text-center mt-2">{{ profile.xp }}/100 XP</h3>
+            <progress class="progress progress-primary my-4 h-8" :value="profile.xp" max="100">
             </progress>
             <h2>{{ profile.displayName }}</h2>
           </div>
