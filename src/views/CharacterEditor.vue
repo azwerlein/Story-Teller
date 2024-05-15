@@ -1,13 +1,16 @@
 <script setup>
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import CommentSection from "../components/comments/CommentSection.vue";
-import CharacterSection from "../components/CharacterSection.vue";
+import CharacterSection from "../components/CharacterDescriptionSection.vue";
 import {characterConverter, CharacterDescription, characterDescriptionListConverter} from "../models/Character.js";
-import {collection, doc, onSnapshot, setDoc, updateDoc} from "firebase/firestore";
+import {collection, doc, getDoc, onSnapshot, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
+import {useSessionStore} from "../js/store.js";
+
+const store = useSessionStore();
 
 const props = defineProps({
   storyId: {
@@ -25,69 +28,75 @@ const characterDocRef = doc(collection(db, 'stories', props.storyId, 'characters
 useDocumentSnapshotListener(characterDocRef, char => character.value = char);
 
 const sections = ref([]);
-const descriptionDocRef = doc(db, 'characterDescriptions', props.characterId).withConverter(characterDescriptionListConverter);
-useDocumentSnapshotListener(descriptionDocRef, desc => sections.value = desc);
+const descriptionDocRef = doc(collection(db, 'stories', props.storyId, 'characters', props.characterId, 'characterDescriptions'), props.characterId).withConverter(characterDescriptionListConverter);
+getDoc(descriptionDocRef).then(docSnap => {
+  if (docSnap.exists()) {
+    sections.value = docSnap.data();
+  }
+}).catch(error => {
+  console.error('Error: ', error.code, error.message);
+});
 
-// if (sections.value.length === 0) {
-//   sections.value.push(new CharacterDescription(
-//       'Overview',
-//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet justo donec enim diam vulputate ut pharetra. Diam maecenas sed enim ut sem viverra aliquet eget. Proin libero nunc consequat interdum varius sit. Ultricies integer quis auctor elit sed vulputate mi sit. Facilisi etiam dignissim diam quis. In dictum non consectetur a erat nam at. Suspendisse potenti nullam ac tortor vitae purus. Ultrices dui sapien eget mi proin sed libero enim sed. Mauris rhoncus aenean vel elit scelerisque. Pharetra magna ac placerat vestibulum. Auctor urna nunc id cursus metus aliquam eleifend. Condimentum vitae sapien pellentesque habitant morbi tristique senectus et. Nam aliquam sem et tortor consequat. Cras pulvinar mattis nunc sed blandit libero. Arcu vitae elementum curabitur vitae nunc sed velit dignissim. Varius quam quisque id diam vel quam. Volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque.'
-//   ));
-//   sections.value.push(new CharacterDescription(
-//       'Appearance',
-//       "Morag has long black hair and wears an officer's uniform."
-//   ));
-//   sections.value.push(new CharacterDescription(
-//       'Personality',
-//       'Morag is very loyal to her home country.'
-//   ));
-//   setDoc(descriptionDocRef, sections.value);
-// }
+onMounted(() => {
+  // This adds a simple template for users to follow.
+  if (sections.value.length === 0) {
+    sections.value.push(new CharacterDescription(
+        'Overview',
+        '',
+    ));
+    sections.value.push(new CharacterDescription(
+        'Appearance',
+        "",
+    ));
+    sections.value.push(new CharacterDescription(
+        'Personality',
+        '',
+    ));
+  }
+});
 
 function addNewSection() {
-  sections.value.push(new CharacterDescription());
+  let desc = new CharacterDescription();
+  desc.authorId = character.value.authorId;
+  sections.value.push(desc);
 }
 
-function updateDescription(description) {
-  updateDoc(descriptionDocRef, {
-    [description.name]: description.description,
-  }).catch(error => {
+function updateDescription() {
+  sections.value.forEach(section => section.authorId = character.value.authorId);
+  setDoc(descriptionDocRef, sections.value)
+      .catch(error => {
     console.error('Error: ', error.code, error.message);
   });
 }
 
 const imageEditMode = ref(false);
-// const backupSections = ref([]);
-
-// function enterEditMode() {
-//   editMode.value = true;
-//   backupSections.value = [];
-//   sections.value.forEach(desc => backupSections.value.push(desc));
-// }
 
 </script>
 
 <template>
   <div class="w-11/12 m-auto p-8">
+    <RouterLink class="btn btn-neutral" :to="{name: 'storyeditor'}"><</RouterLink>
     <div v-if="character">
       <h1>{{ character.name }}</h1>
       <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
         <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
-          <div class="max-w-64 m-auto">
+          <div class="max-w-64 h-64 m-auto">
             <ImagePreviewInput v-if="imageEditMode"
                                label="Character Image"></ImagePreviewInput>
             <img v-else
+                 class="h-64 w-64"
                  :src="character.photoURL"
-                 alt="Character Portrait">
+                 alt="Character portrait not found">
           </div>
         </div>
-        <CharacterSection v-for="section in sections"
+        <CharacterSection v-for="(section, i) in sections"
                           :key="section.name"
                           :section="section"
+                          :index="i"
                           @update-description="updateDescription"
                           class="col-span-2 col-start-1"
         ></CharacterSection>
-        <button class="btn btn-primary" @click="addNewSection">Add Section</button>
+        <button class="btn btn-primary col-start-1" @click="addNewSection">Add Section</button>
       </div>
 
       <CommentSection :original-post-id="characterId"

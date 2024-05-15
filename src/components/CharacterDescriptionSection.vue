@@ -8,17 +8,30 @@ const props = defineProps({
     type: CharacterDescription,
     required: true,
   },
+  index: {
+    type: Number,
+    required: true,
+  },
 });
 
 const emit = defineEmits(['updateDescription']);
-
-// const name = ref(props.section.name);
-// const description = ref(props.section.description);
 
 const heading = ref(null);
 const content = ref(null);
 
 const editMode = ref(false);
+
+const headerEditorStyles = computed(() => ({
+  'border-2': editMode.value,
+  'border-neutral-content/50': editMode.value,
+  'rounded-t-md': editMode.value,
+}));
+
+const contentEditorStyles = computed(() => ({
+  'border-2': editMode.value,
+  'border-neutral-content/50': editMode.value,
+  'rounded-b-md': editMode.value,
+}));
 
 function enterEditMode() {
   editMode.value = true;
@@ -34,7 +47,7 @@ function saveChanges() {
   editMode.value = false;
   props.section.name = heading.value.textContent;
   props.section.description = content.value.textContent;
-  emit('updateDescription', props.section);
+  emit('updateDescription');
 }
 
 </script>
@@ -42,23 +55,26 @@ function saveChanges() {
 <template>
   <section class="p-4">
     <div class="flex justify-between">
-      <div v-bind:class="{headingPlaceholder: editMode}"
+      <div v-bind:class="headerEditorStyles"
            v-bind:contenteditable="editMode"
            class="text-2xl font-semibold border-b-2 border-primary min-h-8 w-full"
            ref="heading"
-      >{{ section.name }}</div>
-      <div class="me-5" @click="enterEditMode">
-        <i class="fa-solid fa-pencil fa-lg"></i>
+      >{{ section.name }}
       </div>
+      <button class="btn btn-outline btn-primary me-5" @click="enterEditMode">
+        <i class="fa-solid fa-pencil fa-lg"></i>
+        <p> Edit</p>
+      </button>
     </div>
-    <div v-bind:class="{contentPlaceholder: editMode}"
+    <div v-bind:class="contentEditorStyles"
          v-bind:contenteditable="editMode"
-         class="min-h-8"
+         class="min-h-32"
          ref="content"
-    >{{ section.description }}</div>
-    <div v-if="editMode">
-              <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>
-              <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>
+    >{{ section.description }}
+    </div>
+    <div v-if="editMode" class="flex flex-col md:flex-row md:justify-end gap-y-2 md:gap-x-4 md:mx-2 mt-2">
+      <button class="btn btn-primary" @click="saveChanges">Save</button>
+      <button class="btn btn-neutral" @click="cancelChanges">Cancel</button>
     </div>
   </section>
 </template>

@@ -18,7 +18,7 @@ const props = defineProps({
   storyId: {
     type: String,
     required: true,
-  },
+  }
 });
 
 const story = ref(null);
@@ -67,7 +67,14 @@ const myStory = computed(() => {
     <RouterLink class="btn btn-neutral" :to="{name: 'home'}"><</RouterLink>
     <div v-if="story" class="p-8">
       <h1>{{story.title}}</h1>
-      <CreateCharacterModal v-if="myStory" @save-image="updatePicture" @create-character="addCharacter"></CreateCharacterModal>
+      <div class="flex justify-between">
+        <CreateCharacterModal v-if="myStory" @save-image="updatePicture" @create-character="addCharacter"></CreateCharacterModal>
+        <label>
+          Set visibility: Private
+          <input v-model="story.visibility" type="checkbox" class="toggle toggle-primary" ref="Set visibility:" checked />
+           Public
+        </label>
+      </div>
       <CharacterList
           :characters="characters"
           @delete-character="deleteCharacter"

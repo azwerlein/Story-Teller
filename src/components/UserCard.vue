@@ -24,7 +24,7 @@ const props = defineProps({
             </div>
           </div>
           <div class="col-span-2 flex flex-col gap-y-4">
-            <h2 class="text-4xl">{{ profile.displayName }}</h2>
+            <h2 class="text-3xl">{{ profile.displayName }}</h2>
             <progress class="progress progress-primary h-4 md:my-4 md:h-8 w-full" :value="profile.xp" max="100"></progress>
             <h3 class="content-center text-center">{{ profile.xp }}/100 XP</h3>
             <div class="flex flex-row justify-evenly gap-x-4">

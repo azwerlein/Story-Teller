@@ -27,7 +27,7 @@ getDoc(doc(db, 'users', props.story.authorId))
 
 <template>
   <RouterLink :to="{name: 'storyeditor', params: {storyId: story.uid}}">
-    <div class="card bg-neutral text-neutral-content border-4 border-neutral my-4">
+    <div class="card border-4 border-primary bg-neutral text-neutral-content border-4 border-neutral my-4">
       <div class="card-body p-[1.25rem]">
         <h3>{{ story.title }}</h3>
         <h4 class="text-wrap">{{ authorName }}</h4>

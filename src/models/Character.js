@@ -21,28 +21,29 @@ export const characterConverter = {
     }
 }
 
-export function CharacterDescription(name, description) {
+export function CharacterDescription(name, description, authorId) {
     this.name = name;
     this.description = description;
+    this.authorId = authorId;
 }
 
 export const characterDescriptionListConverter = {
     toFirestore: list => {
-        let pojo = {}
-        list.map(section => {
-            pojo[section.name] = section.description;
-        })
-        console.log(pojo);
-        return pojo;
+        list = list.map(desc => {
+            return {
+                name: desc.name,
+                description: desc.description,
+                authorId: desc.authorId,
+            }
+        });
+        return { sections: list };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
         let list = [];
-        for (let property in data) {
-            console.log(property);
-            console.log(data[property]);
-            list.push(new CharacterDescription(property, data[property]));
-        }
+        data.sections.forEach((item) => {
+            list.push(new CharacterDescription(item.name, item.description, data.authorId));
+        });
         return list;
     }
 }
