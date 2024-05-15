@@ -1,9 +1,9 @@
 import {Timestamp} from "@firebase/firestore";
 
-export default function CommentPost(author, content, originalPost, precursor, date, modified, type) {
+export default function CommentPost(author, content, originalPostId, precursor, date, modified, type) {
     this.author = author;
     this.content = content;
-    this.originalPost = originalPost;
+    this.originalPostId = originalPostId;
     this.precursor = precursor;
     this.date = date ?? new Date();
     this.modified = modified ?? false;
@@ -15,7 +15,7 @@ export const commentConverter = {
         return {
             author: comment.author,
             content: comment.content,
-            originalPost: comment.originalPost,
+            originalPostId: comment.originalPostId,
             precursor: comment.precursor,
             date: Timestamp.fromDate(comment.date),
             modified: comment.modified,
@@ -24,6 +24,6 @@ export const commentConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new CommentPost(data.author, data.content, data.originalPost, data.precursor, data.date?.toDate(), data.modified, data.type);
+        return new CommentPost(data.author, data.content, data.originalPostId, data.precursor, data.date?.toDate(), data.modified, data.type);
     }
 }
