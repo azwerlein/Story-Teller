@@ -48,15 +48,21 @@ function createProfile(uid) {
   profile.value.internalId = uid;
   let profileId = profile.value.displayName.split(' ').join('-');
   profileId = profileId.toLowerCase();
-  return uploadPicture(profileId, 'avatars')
-      .then(url => {
-        profile.value.photoURL = url;
-        const docRef = doc(db, 'users', profileId).withConverter(profileConverter);
-        setDoc(docRef, profile.value);
-      })
-      .catch(error => {
-        console.error('Error: ', error.code, error.message);
-      });
+  const docRef = doc(db, 'users', profileId).withConverter(profileConverter);
+  if (picture.value) {
+    return uploadPicture(profileId, 'avatars')
+        .then(url => {
+          profile.value.photoURL = url;
+          setDoc(docRef, profile.value);
+        })
+        .catch(error => {
+          console.error('Error: ', error.code, error.message);
+        });
+  }
+  else {
+    setDoc(docRef, profile.value);
+  }
+
 }
 
 const {picture, updatePicture, uploadPicture} = usePictureInput();

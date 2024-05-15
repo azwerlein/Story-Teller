@@ -80,11 +80,11 @@ const imageEditMode = ref(false);
       <h1>{{ character.name }}</h1>
       <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
         <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
-          <div class="max-w-64 h-64 m-auto">
+          <div class="w-64 h-64 m-auto">
             <ImagePreviewInput v-if="imageEditMode"
                                label="Character Image"></ImagePreviewInput>
             <img v-else
-                 class="h-64 w-64"
+                 class="h-full w-full"
                  :src="character.photoURL"
                  alt="Character portrait not found">
           </div>
