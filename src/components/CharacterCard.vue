@@ -21,7 +21,7 @@ function deleteCharacter() {
   <div>
     <div class="card bg-neutral/50 text-neutral-content p-4 transition ease-linear hover:scale-100 hover:bg-neutral">
       <div class="flex justify-end w-full">
-        <button @click="deleteCharacter"
+        <button class="btn bg-red-700" @click="deleteCharacter"
         ><i class="fa-solid fa-trash"></i></button>
       </div>
       <div class="card-body"

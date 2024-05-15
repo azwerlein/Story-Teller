@@ -12,7 +12,12 @@ export function useCollectionSnapshotListener(query, listRef, loadedRef) {
                     list.push(change.doc.data());
                 } else if (change.type === 'removed') {
                     let char = change.doc.data();
-                    list.splice(list.indexOf(char), 1);
+                    for (let i = 0; i < list.length; i++) {
+                        if (list[i].uid === char.uid) {
+                            list.splice(i, 1);
+                            break;
+                        }
+                    }
                 }
             });
         },

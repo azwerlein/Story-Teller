@@ -48,6 +48,9 @@ function createStory(story) {
                             :user-session="store.userSession"
                             @create-story="createStory"
           ></CreateStoryModal>
+          <div v-else>
+            <h3>Please log in to see your stories.</h3>
+          </div>
         </div>
         <Suspense v-if="store.userSession">
           <template #default>

@@ -70,19 +70,10 @@ const imageEditMode = ref(false);
 <template>
   <div class="w-11/12 m-auto p-8">
     <div v-if="character">
-      <div class="flex justify-end w-full">
-        <!--      <div v-if="editMode">-->
-        <!--        &lt;!&ndash;        <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>&ndash;&gt;-->
-        <!--        &lt;!&ndash;        <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>&ndash;&gt;-->
-        <!--      </div>-->
-        <!--      <div v-else>-->
-        <!--        &lt;!&ndash;        <button class="btn btn-neutral" @click="enterEditMode">Edit page</button>&ndash;&gt;-->
-        <!--      </div>-->
-      </div>
       <h1>{{ character.name }}</h1>
       <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
         <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
-          <div class="max-w-64">
+          <div class="max-w-64 m-auto">
             <ImagePreviewInput v-if="imageEditMode"
                                label="Character Image"></ImagePreviewInput>
             <img v-else
