@@ -1,29 +1,24 @@
 <script setup>
 import CreateStoryModal from "../components/CreateStoryModal.vue";
 
-import {auth, db} from "../js/firebase.js";
+import {db} from "../js/firebase.js";
 import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {defineAsyncComponent, onMounted, ref} from "vue";
-import Story, {storyConverter} from "../models/Story.js";
+import {storyConverter} from "../models/Story.js";
 import {useSessionStore} from "../js/store.js";
 import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
+import AsyncLoader from "../components/skeleton/AsyncLoader.vue";
+import SkeletonList from "../components/skeleton/SkeletonList.vue";
+import SkeletonStoryCard from "../components/skeleton/SkeletonStoryCard.vue";
 
 const StoryList = defineAsyncComponent(() => import("../components/StoryList.vue"));
 
 const store = useSessionStore();
 
-const stories = ref([]);
-const userStories = ref([]);
-userStories.value.push(new Story(0, 'Xenoblade', 'Monolith Soft'));
 
 const collectionRef = collection(db, 'stories').withConverter(storyConverter);
-useCollectionSnapshotListener(query(collectionRef), stories);
-
-
-onMounted(async () => {
-  await auth.authStateReady();
-  useCollectionSnapshotListener(query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? '')), userStories);
-});
+const allStoryQuery = query(collectionRef);
+const userStoryQuery = query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? ''));
 
 
 function createStory(story) {
@@ -50,22 +45,41 @@ function createStory(story) {
                             @create-story="createStory"
           ></CreateStoryModal>
         </div>
-        <Suspense v-if="store.userSession">
+        <Suspense>
           <template #default>
-            <StoryList :stories="userStories"></StoryList>
+            <AsyncLoader
+                :query="userStoryQuery">
+              <template #default="{list}">
+                <StoryList :stories="list"></StoryList>
+              </template>
+            </AsyncLoader>
           </template>
           <template #fallback>
-            <p>Loading...</p>
+            <SkeletonList
+                :size="3"
+                :skeleton="SkeletonStoryCard"
+            ></SkeletonList>
           </template>
         </Suspense>
       </div>
-      <!--    <div class="border-x-2 border-neutral p-4">-->
-      <!--      <h2>Feed</h2>-->
-      <!--      <StoryList :stories="stories"></StoryList>-->
-      <!--    </div>-->
       <div class="w-full p-8">
         <h2>Explore</h2>
-<!--        <StoryList :stories="stories"></StoryList>-->
+        <Suspense>
+          <template #default>
+            <AsyncLoader
+                :query="allStoryQuery">
+              <template #default="{list}">
+                <StoryList :stories="list"></StoryList>
+              </template>
+            </AsyncLoader>
+          </template>
+          <template #fallback>
+            <SkeletonList
+                :size="3"
+                :skeleton="SkeletonStoryCard"
+            ></SkeletonList>
+          </template>
+        </Suspense>
       </div>
     </div>
   </div>

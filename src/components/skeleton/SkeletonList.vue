@@ -1,12 +1,16 @@
 <script setup>
-import SkeletonUserCard from './SkeletonUserCard.vue';
 
 const props = defineProps({
   size: {
     type: Number,
     required: true,
+  },
+  skeleton: {
+    type: Object,
+    required: true,
   }
 });
+
 </script>
 
 <template>
@@ -14,7 +18,7 @@ const props = defineProps({
     <component
         v-for="index in size"
         :key="index"
-        :is="SkeletonUserCard"
+        :is="skeleton"
         class="my-2"
     ></component>
   </div>
