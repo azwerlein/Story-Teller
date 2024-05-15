@@ -1,38 +1,37 @@
 <script setup>
-import UserList from "../components/UserList.vue";
-
-import {collection, doc, getDocs, limit, query} from "firebase/firestore";
+import {collection, limit, query} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {profileConverter} from "../models/User.js";
-import {ref} from "vue";
-import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
+import {defineAsyncComponent} from "vue";
+import AsyncLoader from "../components/skeleton/AsyncLoader.vue";
+import SkeletonList from "../components/skeleton/SkeletonList.vue";
+const UserList = defineAsyncComponent(() => import("../components/UserList.vue"));
 
-const users = ref([]);
-
-const q = query(collection(db, 'users'), limit(5)).withConverter(profileConverter);
-
-useCollectionSnapshotListener(q, users);
-
-// new Promise(r => setTimeout(r, 0))
-//     .then(() => getDocs(q))
-//     .then(snap => {
-//       snap.forEach(doc => {
-//         let profile = new Profile();
-//         profile.displayName = doc.data().displayName;
-//         profile.photoURL = doc.data().photoURL;
-//         users.value.push({id: doc.id, profile: profile});
-//       });
-//     })
-//     .catch(error => {
-//       console.log('Error: ', error.code, error.message);
-//     });
+const userQuery = query(collection(db, 'users'), limit(10)).withConverter(profileConverter);
 
 </script>
 
 <template>
-  <h2 class="text-6xl text-center my-8">Users</h2>
-  <UserList class="md:grid grid-cols-3 gap-4"
-            :users="users"></UserList>
+  <div>
+    <h2 class="text-6xl text-center my-8">Users</h2>
+    <Suspense>
+      <template #default>
+        <AsyncLoader :query="userQuery">
+          <template #default="{list}">
+            <UserList
+                :users="list"
+                class="md:grid grid-cols-3 gap-4"></UserList>
+          </template>
+        </AsyncLoader>
+      </template>
+      <template #fallback>
+        <SkeletonList
+            :size="10"
+            class="md:grid grid-cols-3 gap-4"
+        ></SkeletonList>
+      </template>
+    </Suspense>
+  </div>
 </template>
 
 <style scoped>

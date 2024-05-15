@@ -2,7 +2,7 @@ import {onSnapshot} from "firebase/firestore";
 import {onUnmounted, unref} from "vue";
 
 
-export function useCollectionSnapshotListener(query, listRef) {
+export function useCollectionSnapshotListener(query, listRef, loadedRef) {
     const list = unref(listRef);
     const unsubscribe = onSnapshot(
         query,
@@ -18,6 +18,11 @@ export function useCollectionSnapshotListener(query, listRef) {
         },
         error => {
             console.error(error.code, error);
+        },
+        () => {
+            if (loadedRef !== undefined) {
+                loadedRef.value = true;
+            }
         }
     );
 
