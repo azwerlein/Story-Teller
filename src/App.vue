@@ -13,7 +13,7 @@ store.init();
     <RouterView class="min-h-[60vh]"></RouterView>
   </main>
 
-  <footer class="flex justify-center w-4/5 p-5 border-t-2 border-neutral m-auto">
+  <footer class="flex justify-center w-4/5 p-5 border-t-2 border-neutral mx-auto mt-4">
     <p>&copy; 2024 Cactus corp.</p>
   </footer>
 

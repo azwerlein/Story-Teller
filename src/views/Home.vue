@@ -6,7 +6,6 @@ import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore
 import {defineAsyncComponent, onMounted, ref} from "vue";
 import {storyConverter} from "../models/Story.js";
 import {useSessionStore} from "../js/store.js";
-import {useCollectionSnapshotListener} from "../composables/SnapshotListener.js";
 import AsyncLoader from "../components/skeleton/AsyncLoader.vue";
 import SkeletonList from "../components/skeleton/SkeletonList.vue";
 import SkeletonStoryCard from "../components/skeleton/SkeletonStoryCard.vue";
@@ -18,16 +17,21 @@ const store = useSessionStore();
 
 const collectionRef = collection(db, 'stories').withConverter(storyConverter);
 const allStoryQuery = query(collectionRef);
-const userStoryQuery = query(collectionRef, where('authorId', '==', store.userSession?.user.uid ?? ''));
+// This is in function form to wait until the auth state is settled.
+function getUserStoryQuery() {
+  return query(collectionRef, where('authorId', '==', store.userSession?.profile.uid));
+}
 
 
 function createStory(story) {
   let uid = story.title.split(' ').join('-');
   uid = uid.toLowerCase();
+  story.authorId = store.userSession?.profile.uid;
+  console.log(story);
   const docRef = doc(db, 'stories', uid).withConverter(storyConverter);
   setDoc(docRef, story)
       .catch(error => {
-        console.log('Error: ', error.code, error.data);
+        console.log('Error: ', error.code, error.message);
       });
 }
 
@@ -45,10 +49,10 @@ function createStory(story) {
                             @create-story="createStory"
           ></CreateStoryModal>
         </div>
-        <Suspense>
+        <Suspense v-if="store.userSession">
           <template #default>
             <AsyncLoader
-                :query="userStoryQuery">
+                :query="getUserStoryQuery()">
               <template #default="{list}">
                 <StoryList :stories="list"></StoryList>
               </template>

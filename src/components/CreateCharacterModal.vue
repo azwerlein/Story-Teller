@@ -7,8 +7,6 @@ import Character from "../models/Character.js";
 const modal = ref(null);
 const nameInput = ref(null);
 
-const invalidClass = ref('invalid');
-
 const character = ref(new Character());
 
 const emit = defineEmits(['createCharacter']);
@@ -20,13 +18,15 @@ function createCharacter() {
   }
 }
 
+const invalidClass = 'invalid';
+
 function validateFields() {
   let valid = true;
   if (!character.value.name) {
     valid = false;
-    nameInput.value.classList.add(invalidClass.value);
+    nameInput.value.classList.add(invalidClass);
   } else {
-    nameInput.value.classList.remove(invalidClass.value);
+    nameInput.value.classList.remove(invalidClass);
   }
 
   return valid;

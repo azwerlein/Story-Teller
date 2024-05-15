@@ -1,18 +1,18 @@
-export default function Story(uid, title, author) {
+export default function Story(uid, title, authorId) {
     this.uid = uid;
     this.title = title;
-    this.author = author;
+    this.authorId = authorId;
 }
 
 export const storyConverter = {
     toFirestore: (story) => {
         return {
             title: story.title,
-            author: story.author,
+            authorId: story.authorId,
         }
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Story(snapshot.id, data.title, data.author);
+        return new Story(snapshot.id, data.title, data.authorId);
     }
 };

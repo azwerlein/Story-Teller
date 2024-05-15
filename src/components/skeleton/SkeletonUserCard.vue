@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <div class="card skeleton">
     <div class="card-body">
@@ -25,7 +21,3 @@
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

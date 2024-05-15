@@ -9,23 +9,32 @@ const props = defineProps({
 });
 
 const modal = ref(null);
+const titleInput = ref(null);
 
 const emit = defineEmits(['createStory']);
 
+const story = ref(new Story());
+
 function createStory() {
-  let title = document.getElementById('titleInput').value;
-  let authorId = props.userSession?.user.uid;
-  if (!title) {
-    console.log('Error! Title is required.');
+  if (!validateFields()) {
     return;
   }
-  if (!authorId) {
-    console.log('Error! Must be logged in.');
+  emit('createStory', story.value);
+  modal.value.closeModal();
+}
+
+const invalidClass = 'invalid';
+
+function validateFields() {
+  let valid = true;
+  if (!story.value.title) {
+    valid = false;
+    titleInput.value.classList.add(invalidClass);
+  } else {
+    titleInput.value.classList.remove(invalidClass);
   }
 
-  emit('createStory', new Story(null, title, authorId));
-  modal.value.closeModal();
-
+  return valid;
 }
 
 </script>
@@ -35,7 +44,7 @@ function createStory() {
     <template #default>
       <h3 class="font-bold text-lg">New Story</h3>
       <label for="titleInput" class="label">Title: </label>
-      <input id="titleInput" class="input input-bordered" type="text">
+      <input id="titleInput" class="input input-bordered" type="text" ref="titleInput" v-model="story.title">
       <label for="genreInput" class="label">Genre: </label>
       <input id="genreInput" class="input input-bordered" type="text">
     </template>

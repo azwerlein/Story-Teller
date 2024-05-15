@@ -1,5 +1,5 @@
-<script>
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+<script setup>
+import {createUserWithEmailAndPassword, deleteUser} from "firebase/auth";
 import {doc, setDoc} from 'firebase/firestore';
 import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 
@@ -9,59 +9,69 @@ import {auth, db, storage} from "../js/firebase.js";
 import {Profile, profileConverter} from '../models/User.js';
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 
-export default {
-  name: "AccountCreation",
-  components: {ImagePreviewInput},
-  data() {
-    return {
-      account: {
-        email: '',
-        password: '',
-      },
-      user: new Profile(),
-      picture: {},
-    }
-  },
-  methods: {
-    createAccount() {
-      createUserWithEmailAndPassword(auth, this.account.email, this.account.password)
-          .then((userCredential) => {
-            let user = userCredential.user;
-            this.createProfile(user.uid);
-          })
-          .then(() => {
-            router.push('home');
-          })
-          .catch(error => {
-            console.log('Error: ', error.code, error.message);
-          });
-    },
-    createProfile(uid) {
-      const avatarsRef = ref(storage, 'avatars/' + uid);
-      uploadBytes(avatarsRef, this.picture)
-          .then(snapshot => {
-            return getDownloadURL(snapshot.ref);
-          })
-          .then(url => {
-            this.user.photoURL = url;
-            const docRef = doc(db, 'users', uid).withConverter(profileConverter);
-            setDoc(docRef, this.user);
-          })
-          .catch(error => {
-            console.error('Error: ', error.code, error.message);
-          });
-    },
-    updatePicture(blob) {
-      this.picture = blob;
-    }
-  },
+import {ref as vRef} from 'vue'
+
+const account = vRef({
+  email: '',
+  password: '',
+});
+const profile = vRef(new Profile());
+const picture = vRef({});
+
+let temporaryUser;
+
+function createAccount() {
+  createUserWithEmailAndPassword(auth, account.value.email, account.value.password)
+      .then((userCredential) => {
+        temporaryUser = userCredential.user;
+        return createProfile(temporaryUser.uid);
+      })
+      .then(() => {
+        router.push('home');
+      })
+      .catch(error => {
+        console.log('Error: ', error.code, error.message);
+        if (temporaryUser !== undefined) {
+          deleteUser(temporaryUser)
+              .then(() => {
+                temporaryUser = null;
+                console.log('User deleted.');
+              })
+              .catch(error => {
+                console.error('Error: ', error.code, error.message);
+              });
+        }
+      });
+}
+
+function createProfile(uid) {
+  profile.value.internalId = uid;
+  let profileId = profile.value.displayName.split(' ').join('-');
+  profileId = profileId.toLowerCase();
+  const avatarsRef = ref(storage, 'images/avatars/' + profileId);
+  return uploadBytes(avatarsRef, picture.value)
+      .then(snapshot => {
+        return getDownloadURL(snapshot.ref);
+      })
+      .then(url => {
+        profile.value.photoURL = url;
+        const docRef = doc(db, 'users', profileId).withConverter(profileConverter);
+        setDoc(docRef, profile.value);
+      })
+      .catch(error => {
+        console.error('Error: ', error.code, error.message);
+      });
+}
+
+function updatePicture(blob) {
+  picture.value = blob;
 }
 </script>
 
 <template>
-  <h2 class="text-6xl text-center my-8">Create an account</h2>
-  <div class="w-64 md:w-1/3 content-center m-auto">
-    <form v-on:submit.prevent="createAccount">
+  <div>
+    <h2 class="text-6xl text-center my-8">Create an account</h2>
+    <div class="w-64 md:w-1/3 content-center m-auto">
       <label class="label" for="emailInput">Email</label>
       <input class="form-control w-full p-2 rounded-md"
              type="email"
@@ -79,17 +89,17 @@ export default {
              type="text"
              id="nameInput"
              required
-             v-model="user.displayName">
+             v-model="profile.displayName">
       <ImagePreviewInput
           id="avatar"
           label="Avatar: "
           @save-image="updatePicture"
       ></ImagePreviewInput>
       <div class="flex flex-col content-center">
-        <button class="btn btn-primary mt-8" type="submit">Create account</button>
-        <RouterLink class="link text-center mt-4" :to="{name: 'register'}">Create an account</RouterLink>
+        <button class="btn btn-primary mt-8" type="button" @click="createAccount">Create account</button>
+        <RouterLink class="link text-center mt-4" :to="{name: 'login'}">I already have an account.</RouterLink>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 

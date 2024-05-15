@@ -1,16 +1,13 @@
 <script setup>
 
 import CharacterList from "../components/CharacterList.vue";
+import CreateCharacterModal from "../components/CreateCharacterModal.vue";
 
 import {ref} from "vue";
 import {addDoc, collection, doc, deleteDoc, query, where} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {characterConverter} from "../models/Character.js";
-import {useSessionStore} from "../js/store.js";
 import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
-import CreateCharacterModal from "../components/CreateCharacterModal.vue";
-
-const store = useSessionStore();
 
 const props = defineProps({
   storyId: {
@@ -32,7 +29,7 @@ function addCharacter(character) {
   character.storyId = props.storyId;
   addDoc(characterCollection, character)
       .catch(error => {
-        console.error('ERROR: ', error.code, error.data);
+        console.error('Error: ', error.code, error.message);
       });
 }
 

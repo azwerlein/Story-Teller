@@ -1,5 +1,4 @@
 <script setup>
-
 const props = defineProps({
   size: {
     type: Number,
@@ -10,7 +9,6 @@ const props = defineProps({
     required: true,
   }
 });
-
 </script>
 
 <template>
