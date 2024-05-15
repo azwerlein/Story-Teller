@@ -1,4 +1,4 @@
-export default function Character(uid, name, photoURL, storyId) {
+export default function Character(uid, name, photoURL, storyId, authorId) {
     this.uid = uid;
     this.name = name;
     this.photoURL = photoURL ?? '';

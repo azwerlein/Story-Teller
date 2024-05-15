@@ -10,14 +10,18 @@ import {useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
 import ImagePreviewInput from "../components/imageEditor/ImagePreviewInput.vue";
 
 const props = defineProps({
+  storyId: {
+    type: String,
+    required: true,
+  },
   characterId: {
     type: String,
-    required: false,
+    required: true,
   }
 });
 
 const character = ref(null);
-const characterDocRef = doc(collection(db, 'characters'), props.characterId).withConverter(characterConverter);
+const characterDocRef = doc(collection(db, 'stories', props.storyId, 'characters'), props.characterId).withConverter(characterConverter);
 useDocumentSnapshotListener(characterDocRef, char => character.value = char);
 
 const sections = ref([]);
@@ -65,38 +69,40 @@ const imageEditMode = ref(false);
 
 <template>
   <div class="w-11/12 m-auto p-8">
-    <div class="flex justify-end w-full">
-      <!--      <div v-if="editMode">-->
-      <!--        &lt;!&ndash;        <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>&ndash;&gt;-->
-      <!--        &lt;!&ndash;        <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>&ndash;&gt;-->
-      <!--      </div>-->
-      <!--      <div v-else>-->
-      <!--        &lt;!&ndash;        <button class="btn btn-neutral" @click="enterEditMode">Edit page</button>&ndash;&gt;-->
-      <!--      </div>-->
-    </div>
-    <h1 v-if="character">{{ character.name }}</h1>
-    <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
-      <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
-        <div class="max-w-64">
-          <ImagePreviewInput v-if="imageEditMode"
-                             label="Character Image"></ImagePreviewInput>
-          <img v-else
-               src="../assets/XC2-Morag-Artwork.png"
-               alt="Character Portrait">
-        </div>
+    <div v-if="character">
+      <div class="flex justify-end w-full">
+        <!--      <div v-if="editMode">-->
+        <!--        &lt;!&ndash;        <button class="btn btn-neutral me-2" @click="cancelChanges">Cancel</button>&ndash;&gt;-->
+        <!--        &lt;!&ndash;        <button class="btn btn-primary ms-2" @click="saveChanges">Save</button>&ndash;&gt;-->
+        <!--      </div>-->
+        <!--      <div v-else>-->
+        <!--        &lt;!&ndash;        <button class="btn btn-neutral" @click="enterEditMode">Edit page</button>&ndash;&gt;-->
+        <!--      </div>-->
       </div>
-      <CharacterSection v-for="section in sections"
-                        :key="section.name"
-                        :section="section"
-                        @update-description="updateDescription"
-                        class="col-span-2 col-start-1"
-      ></CharacterSection>
-      <button class="btn btn-primary" @click="addNewSection">Add Section</button>
-    </div>
+      <h1>{{ character.name }}</h1>
+      <div id="content" class="md:grid grid-cols-3 grid-flow-row-dense overflow-y-auto">
+        <div class="col-start-3 text-gray-900 bg-neutral rounded-md p-8">
+          <div class="max-w-64">
+            <ImagePreviewInput v-if="imageEditMode"
+                               label="Character Image"></ImagePreviewInput>
+            <img v-else
+                 :src="character.photoURL"
+                 alt="Character Portrait">
+          </div>
+        </div>
+        <CharacterSection v-for="section in sections"
+                          :key="section.name"
+                          :section="section"
+                          @update-description="updateDescription"
+                          class="col-span-2 col-start-1"
+        ></CharacterSection>
+        <button class="btn btn-primary" @click="addNewSection">Add Section</button>
+      </div>
 
-    <CommentSection :original-post-id="characterId"
-                    type="character"
-    ></CommentSection>
+      <CommentSection :original-post-id="characterId"
+                      type="character"
+      ></CommentSection>
+    </div>
   </div>
 
 </template>

@@ -4,10 +4,14 @@ import CharacterList from "../components/CharacterList.vue";
 import CreateCharacterModal from "../components/CreateCharacterModal.vue";
 
 import {ref} from "vue";
-import {addDoc, collection, doc, deleteDoc, query, where} from "firebase/firestore";
+import {collection, doc, deleteDoc, query, where, setDoc} from "firebase/firestore";
 import {db} from "../js/firebase.js";
 import {characterConverter} from "../models/Character.js";
 import {useCollectionSnapshotListener, useDocumentSnapshotListener} from "../composables/SnapshotListener.js";
+import {useSessionStore} from "../js/store.js";
+import {usePictureInput} from "../composables/PictureInput.js";
+
+const store = useSessionStore();
 
 const props = defineProps({
   storyId: {
@@ -27,8 +31,15 @@ useCollectionSnapshotListener(characterQuery, characters);
 
 function addCharacter(character) {
   character.storyId = props.storyId;
+  character.authorId = store.userSession.profile.uid;
+  let uid = character.name.split(' ').join('-');
+  uid = uid.toLowerCase();
 
-  addDoc(characterCollection, character)
+  uploadPicture(uid, 'characters')
+      .then(url => {
+        character.photoURL = url;
+        setDoc(doc(characterCollection, uid).withConverter(characterConverter), character)
+      })
       .catch(error => {
         console.error('Error: ', error.code, error.message);
       });
@@ -41,6 +52,8 @@ function deleteCharacter(uid) {
       });
 }
 
+const {picture, updatePicture, uploadPicture} = usePictureInput();
+
 </script>
 
 <template>
@@ -48,7 +61,7 @@ function deleteCharacter(uid) {
     <RouterLink class="btn btn-neutral" :to="{name: 'home'}"><</RouterLink>
     <div v-if="story" class="p-8">
       <h1>{{story.title}}</h1>
-      <CreateCharacterModal @create-character="addCharacter"></CreateCharacterModal>
+      <CreateCharacterModal @save-image="updatePicture" @create-character="addCharacter"></CreateCharacterModal>
       <CharacterList
           :characters="characters"
           @delete-character="deleteCharacter"

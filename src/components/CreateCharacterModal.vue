@@ -4,14 +4,13 @@ import Modal from "./Modal.vue";
 import {ref} from "vue";
 import Character from "../models/Character.js";
 import ImagePreviewInput from "./imageEditor/ImagePreviewInput.vue";
-import {usePictureInput} from "../composables/PictureInput.js";
 
 const modal = ref(null);
 const nameInput = ref(null);
 
 const character = ref(new Character());
 
-const emit = defineEmits(['createCharacter']);
+const emit = defineEmits(['createCharacter, saveImage']);
 
 function createCharacter() {
   if (validateFields()) {
@@ -33,8 +32,6 @@ function validateFields() {
 
   return valid;
 }
-
-const {picture, updatePicture, uploadPicture} = usePictureInput();
 </script>
 
 
@@ -47,7 +44,7 @@ const {picture, updatePicture, uploadPicture} = usePictureInput();
       <p class="invalid-message">The name must not be blank.</p>
       <ImagePreviewInput label="Portrait: "
                          id="portrait"
-                         @save-image="updatePicture"
+                         @save-image="i => emit('saveImage', i)"
       ></ImagePreviewInput>
     </template>
     <template #action="{ closeModal }">
