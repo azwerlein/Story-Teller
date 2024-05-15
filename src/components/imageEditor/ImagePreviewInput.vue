@@ -30,13 +30,16 @@ const scale = ref(1);
 const picture = ref(null);
 
 function editPicture(event) {
-  console.log(event)
   scale.value = 1;
   const target = event.target;
   if (!target || !target.files) {
     return;
   }
   picture.value = target.files[0];
+  sendToCanvas();
+}
+
+function sendToCanvas() {
   let reader = new FileReader();
   reader.onloadend = () => {
     const image = new Image();
@@ -47,12 +50,19 @@ function editPicture(event) {
   }
   reader.readAsDataURL(picture.value);
 }
+
 function updatePicture(blob) {
   console.log(blob);
   emit('saveImage', blob);
   const url = URL.createObjectURL(blob);
   preview.value.onload = () => URL.revokeObjectURL(url);
   preview.value.src = url;
+}
+
+function editPictureAgain() {
+  if (picture.value) {
+    sendToCanvas();
+  }
 }
 </script>
 
@@ -64,7 +74,7 @@ function updatePicture(blob) {
          alt="Picture Input"
          accept="image/png, image/jpeg, image/jpg"
          v-on:change="editPicture"/>
-  <img ref="preview" src="" alt="Profile Picture Preview">
+  <img ref="preview" class="mx-auto" src="" alt="Profile Picture Preview" @click="editPictureAgain">
 
   <ImageEditorModal ref="imageEditor"
                     @save-image="updatePicture"
